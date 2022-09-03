@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from 'next';
-import { useState } from 'react';
+import {  useState } from "react";
 import { AppProps } from 'next/app';
 import { getCookie, setCookie } from 'cookies-next';
 import Head from 'next/head';
@@ -9,7 +9,6 @@ import { NotificationsProvider } from '@mantine/notifications';
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
   const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme);
-
   const toggleColorScheme = (value?: ColorScheme) => {
     const nextColorScheme = value || (colorScheme === 'dark' ? 'light' : 'dark');
     setColorScheme(nextColorScheme);
