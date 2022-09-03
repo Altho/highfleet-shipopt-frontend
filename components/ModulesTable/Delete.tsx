@@ -5,7 +5,7 @@ export default function Delete({method}) {
   return (
     <ActionIcon>
       <IconCircleMinus
-        size={18}
+        size={24}
         onClick={method}
       />
     </ActionIcon>

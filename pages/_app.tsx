@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
-import {  useState } from "react";
+import { useState } from 'react';
+import '../styles/global.css';
 import { AppProps } from 'next/app';
 import { getCookie, setCookie } from 'cookies-next';
 import Head from 'next/head';

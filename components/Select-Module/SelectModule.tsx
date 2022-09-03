@@ -6,11 +6,14 @@ import ModulesTable from "../ModulesTable/ModulesTable";
 
 const useStyles = createStyles((theme) => ({
   input: {
-    width: '400px',
-    margin: theme.spacing.lg,
+    // width: '400px',
+    marginBottom: theme.spacing.lg,
+    height: '50px',
+
   },
   dropdown: {
     width: '200px',
+    fontFamily: 'Changa, sans serif',
   },
 }));
 
@@ -38,6 +41,7 @@ export default function SelectModule({ modules, value, handleSelect, type }) {
       }}
         disabled={!modules.length}
         searchable
+        placeholder={'please select'}
         value={value}
         onChange={(value: string) => handleSelect(value, returnType())}
         data={moduleList[0]}
