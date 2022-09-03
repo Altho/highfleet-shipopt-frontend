@@ -30,6 +30,7 @@ export default function HomePage({ modules, constraints }) {
 
   const handleSelect = (newValue: string, type: string) => {
     const moduleIndex = modules.indexOf(newValue);
+    const constraintsIndex = constraints.indexOf(newValue);
     console.log('type', type);
     if (type === 'm') {
       setSelectedModules(selectedModules => [...selectedModules, newValue]);
@@ -37,8 +38,20 @@ export default function HomePage({ modules, constraints }) {
       return;
     }
     setSelectedConstraints(selectedConstraints => [...selectedConstraints, newValue]);
-    constraints.splice(moduleIndex, moduleIndex + 1);
+    constraints.splice(constraintsIndex, constraintsIndex + 1);
+  };
 
+  const handleDelete = (module, type) => {
+    console.log('triggered', module,type);
+    if (type === 'm') {
+      setSelectedModules(prevState => prevState.filter(elem => elem !== module));
+      modules.push(module);
+      modules.sort();
+      return;
+    }
+    setSelectedConstraints(prevState => prevState.filter(elem => elem !== module));
+    constraints.push(module);
+    constraints.sort();
   };
 
 return (
@@ -50,7 +63,7 @@ return (
       handleSelect={handleSelect}
       type={'m'}
     />
-    <ModulesTable modules={selectedModules} />
+    <ModulesTable modules={selectedModules} deleteMethod={handleDelete} type="m" />
     <h1>Constraints :</h1>
     <SelectModule
       modules={constraints}
@@ -58,7 +71,7 @@ return (
       handleSelect={handleSelect}
       type={'c'}
     />
-    <ModulesTable modules={selectedConstraints} />
+    <ModulesTable modules={selectedConstraints} deleteMethod={handleDelete} type="c" />
     <ColorSchemeToggle />
   </>
 );
