@@ -1,4 +1,5 @@
 import { createStyles } from '@mantine/core';
+import { IconUnlink, IconHexagons } from "@tabler/icons";
 
 const useStyles = createStyles((theme) => ({
   main: {
@@ -17,6 +18,9 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'white',
     color: 'black',
     padding: '0px 10px',
+    alignItems: 'center',
+    display: 'flex',
+    gap: '15px',
   },
   chevron: {
     clipPath: 'polygon(50% 0, 100% 50%, 50% 100%, 0 100%, 0 50%, 0 0)',
@@ -25,12 +29,13 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function Title({children}) {
+export default function Title({children, type}) {
   const { classes } = useStyles();
 
   return (
     <div className={classes.main}>
       <div className={classes.title}>
+        {type === 'm' ? <IconHexagons size={32} /> : <IconUnlink size={32} />}
         {children}
       </div>
       <span className={classes.chevron} />

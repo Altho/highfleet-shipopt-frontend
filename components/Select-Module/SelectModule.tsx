@@ -2,6 +2,7 @@ import { createStyles, Select } from "@mantine/core";
 import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 import { createContext, useContext, useState } from "react";
 import ModulesTable from "../ModulesTable/ModulesTable";
+import { IconCirclePlus } from "@tabler/icons";
 
 
 const useStyles = createStyles((theme) => ({
@@ -44,6 +45,7 @@ export default function SelectModule({ modules, value, handleSelect, type }) {
         placeholder={'please select'}
         value={value}
         onChange={(value: string) => handleSelect(value, returnType())}
+        icon={<IconCirclePlus />}
         data={moduleList[0]}
       />
     </>

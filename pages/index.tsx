@@ -79,7 +79,7 @@ return (
   <main className={classes.mainDiv}>
     <Header />
     <Container className={classes.container}>
-    <Title>Modules</Title>
+    <Title type='m'>Modules</Title>
     <SelectModule
       modules={modules}
       value={modulesValue}
@@ -87,7 +87,7 @@ return (
       type={'m'}
     />
     <ModulesTable modules={selectedModules} deleteMethod={handleDelete} type="m" />
-      <Title>Constraints</Title>
+      <Title type='c'>Constraints</Title>
     <SelectModule
       modules={constraints}
       value={constraintsValue}
