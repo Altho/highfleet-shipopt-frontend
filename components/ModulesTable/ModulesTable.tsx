@@ -1,4 +1,5 @@
 import { createStyles, Table, NumberInput } from "@mantine/core";
+import Delete from "./Delete";
 
 const useStyles = createStyles(() => ({
   line: {
@@ -6,7 +7,7 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-export default function ModulesTable({modules}) {
+export default function ModulesTable({modules, deleteMethod, type}) {
   const { classes } = useStyles();
 
   const ths = (
@@ -20,7 +21,8 @@ export default function ModulesTable({modules}) {
     return (
           <tr key={module} className={classes.line}>
             <td>{module}</td>
-            <NumberInput width={100}/>
+            <NumberInput width={100} />
+            <Delete method={() => deleteMethod(module, type)} />
           </tr>
     );
   });

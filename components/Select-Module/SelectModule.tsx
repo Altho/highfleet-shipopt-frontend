@@ -36,6 +36,7 @@ export default function SelectModule({ modules, value, handleSelect, type }) {
           input: classes.input,
           dropdown: classes.dropdown,
       }}
+        disabled={!modules.length}
         searchable
         value={value}
         onChange={(value: string) => handleSelect(value, returnType())}
