@@ -6,6 +6,7 @@ const useStyles = createStyles((theme) => ({
     // width: '400px',
     height: '50px',
     padding: '10px',
+    marginBottom: '20px',
     display: 'flex',
     justifyContent: 'flex-end',
   },

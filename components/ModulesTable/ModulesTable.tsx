@@ -5,13 +5,13 @@ const useStyles = createStyles((theme) => ({
   line: {
     cursor: 'pointer',
     backgroundColor: theme.colorScheme === 'dark' ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.4)',
-    fontFamily: 'Changa, sans-serif',
   },
   numberInput: {
     backgroundColor: theme.colorScheme === 'dark' ? 'grey' : 'white',
   },
   nameDisplay: {
     width: '80%',
+    fontFamily: 'Changa, sans-serif',
   },
   deleteCell: {
     display: 'flex',
@@ -40,6 +40,7 @@ export default function ModulesTable({modules, deleteMethod, type}) {
             <td className={classes.nameDisplay}>{module}</td>
             {/* eslint-disable-next-line max-len */}
             <td><NumberInput classNames={{input: classes.numberInput}} /></td>
+            {/* eslint-disable-next-line max-len */}
             <td className={classes.deleteCell}><Delete method={() => deleteMethod(module, type)} /></td>
           </tr>
     );
@@ -49,7 +50,6 @@ export default function ModulesTable({modules, deleteMethod, type}) {
     <Table captionSide="bottom" striped highlightOnHover>
       <thead className={classes.header}>{modules.length ? ths : null}</thead>
       <tbody>{rows}</tbody>
-      <thead className={classes.header}>{modules.length ? ths : null}</thead>
     </Table>
   );
 

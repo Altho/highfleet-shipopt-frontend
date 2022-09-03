@@ -4,7 +4,7 @@ import SelectModule from '../components/Select-Module/SelectModule';
 import { useState } from "react";
 import ModulesTable from "../components/ModulesTable/ModulesTable";
 import Header from "../components/Layout/Header";
-import { Title } from "@storybook/components";
+import Title  from "../components/Layout/Title";
 
 export const getServerSideProps = async () => {
   const req = await fetch('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/');
@@ -33,7 +33,9 @@ const useStyles = createStyles((theme) => ({
     boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px;',
   },
   container: {
-    backgroundColor: 'rgba(255,255,255,0.5)',
+    backgroundColor: theme.colorScheme === 'dark' ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.5)',
+    paddingTop: '10px',
+    paddingBottom: '50px',
   }
 }));
 
@@ -77,7 +79,7 @@ return (
   <main className={classes.mainDiv}>
     <Header />
     <Container className={classes.container}>
-    <Title>Modules :</Title>
+    <Title>Modules</Title>
     <SelectModule
       modules={modules}
       value={modulesValue}
@@ -85,7 +87,7 @@ return (
       type={'m'}
     />
     <ModulesTable modules={selectedModules} deleteMethod={handleDelete} type="m" />
-    <h1>Constraints :</h1>
+      <Title>Constraints</Title>
     <SelectModule
       modules={constraints}
       value={constraintsValue}

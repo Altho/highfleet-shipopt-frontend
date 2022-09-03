@@ -9,9 +9,11 @@ const useStyles = createStyles((theme) => ({
     // width: '400px',
     marginBottom: theme.spacing.lg,
     height: '50px',
+
   },
   dropdown: {
     width: '200px',
+    fontFamily: 'Changa, sans serif',
   },
 }));
 
