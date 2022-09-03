@@ -1,5 +1,8 @@
 import { createStyles, Select } from "@mantine/core";
 import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
+import { createContext, useContext, useState } from "react";
+import ModulesTable from "../ModulesTable/ModulesTable";
+
 
 const useStyles = createStyles((theme) => ({
   input: {
@@ -11,8 +14,15 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function SelectModule({ modules }) {
+
+
+
+export default function SelectModule({ modules, value, handleSelect, type }) {
+
+
+
   const { classes } = useStyles();
+  const returnType = () => type === 'c' ? 'c' : 'm';
   const moduleList: { value: string, label: string }[] = [
     modules.map((module: string) => (
       { value: module, label: module }
@@ -27,6 +37,8 @@ export default function SelectModule({ modules }) {
           dropdown: classes.dropdown,
       }}
         searchable
+        value={value}
+        onChange={(value: string) => handleSelect(value, returnType())}
         data={moduleList[0]}
       />
     </>
