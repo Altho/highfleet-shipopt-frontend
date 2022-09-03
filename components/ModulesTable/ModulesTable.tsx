@@ -39,7 +39,13 @@ export default function ModulesTable({modules, deleteMethod, type}) {
           <tr key={module} className={classes.line}>
             <td className={classes.nameDisplay}>{module}</td>
             {/* eslint-disable-next-line max-len */}
-            <td><NumberInput classNames={{input: classes.numberInput}} /></td>
+            <td><NumberInput
+              classNames={{input: classes.numberInput}}
+              defaultValue={1}
+              min={1}
+              max={99}
+            />
+            </td>
             {/* eslint-disable-next-line max-len */}
             <td className={classes.deleteCell}><Delete method={() => deleteMethod(module, type)} /></td>
           </tr>
