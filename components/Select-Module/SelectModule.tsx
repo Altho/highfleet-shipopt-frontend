@@ -63,7 +63,6 @@ const useStyles = createStyles((theme) => ({
 export default function SelectModule({ modules, value, handleSelect, type }) {
 
 
-  const [disabled, setDisabled] = useState(false);
   const { classes } = useStyles();
   const returnType = () => type === 'c' ? 'c' : 'm';
   const moduleList: { value: string, label: string }[] = [

@@ -70,11 +70,14 @@ export default function HomePage({ modules, constraints }) {
       setSelectedModules(prevState => prevState.filter(elem => elem !== module));
       modules.push(module);
       modules.sort();
+      setModulesValue(null);
       return;
     }
     setSelectedConstraints(prevState => prevState.filter(elem => elem !== module));
     constraints.push(module);
     constraints.sort();
+    setConstraintsValue(null);
+
   };
 
 return (
