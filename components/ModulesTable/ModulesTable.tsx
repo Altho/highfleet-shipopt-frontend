@@ -1,5 +1,6 @@
-import { createStyles, Table, NumberInput, Badge } from "@mantine/core";
-import Delete from "./Delete";
+import { createStyles, Table, NumberInput, Badge, Slider, RangeSlider } from "@mantine/core";
+import Delete from './Delete';
+import { IconGasStation, IconRocket } from "@tabler/icons";
 
 const useStyles = createStyles((theme) => ({
   line: {
@@ -32,9 +33,20 @@ const useStyles = createStyles((theme) => ({
   header: {
     backgroundColor: 'rgba(255,255,255,0.2)',
   },
+  sliderRoot: {
+    width: '40vw',
+  },
+  bar: {
+    backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'black',
+  },
+  thumb: {
+    backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'black',
+    border: theme.colorScheme === 'dark' ? '#FF8C00 3px solid' : 'darkgrey 3px solid',
+    color: theme.colorScheme === 'dark' ? 'black' : 'white',
+  },
 }));
 
-export default function ModulesTable({modules, deleteMethod, type}) {
+export default function ModulesTable({ modules, deleteMethod, type }) {
   const { classes } = useStyles();
 
   const ths = (
@@ -45,8 +57,7 @@ export default function ModulesTable({modules, deleteMethod, type}) {
     </tr>
   );
 
-  const rows = modules.map((module) => {
-    return (
+  const rows = modules.map((module) => (
           <tr key={module} className={classes.line}>
             <td className={classes.nameDisplay}>
               <Badge
@@ -59,20 +70,33 @@ export default function ModulesTable({modules, deleteMethod, type}) {
               </Badge>
             </td>
             {/* eslint-disable-next-line max-len */}
-            <td><NumberInput
-              classNames={{input: classes.numberInput}}
+            {type === 'm' ? (<td><NumberInput
+              classNames={{ input: classes.numberInput }}
               defaultValue={1}
               min={1}
               max={99}
               stepHoldDelay={500}
               stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
             />
-            </td>
+                             </td>)
+              :
+              <td><RangeSlider
+                thumbSize={30}
+                thumbChildren={module === 'twr' ?( <IconRocket size={20} key={1} />, <IconRocket size={20} key={1} /> )
+                  :
+                 ( <IconGasStation size={20} key={1} />, <IconGasStation size={20} key={1} />)
+                }
+                classNames={{
+                  root: classes.sliderRoot,
+                  bar: classes.bar,
+                  thumb: classes.thumb,
+                }}
+              />
+              </td> }
             {/* eslint-disable-next-line max-len */}
             <td className={classes.deleteCell}><Delete method={() => deleteMethod(module, type)} /></td>
           </tr>
-    );
-  });
+    ));
 
   return (
     <Table captionSide="bottom" striped highlightOnHover>
@@ -80,5 +104,4 @@ export default function ModulesTable({modules, deleteMethod, type}) {
       <tbody>{rows}</tbody>
     </Table>
   );
-
 }
