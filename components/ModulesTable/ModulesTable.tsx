@@ -1,10 +1,16 @@
-import { createStyles, Table, NumberInput } from "@mantine/core";
+import { createStyles, Table, NumberInput, Badge } from "@mantine/core";
 import Delete from "./Delete";
 
 const useStyles = createStyles((theme) => ({
   line: {
-    cursor: 'pointer',
     backgroundColor: theme.colorScheme === 'dark' ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.4)',
+    '&:hover': {
+      // transform: 'scale(1.01)',
+      // boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;',
+      borderLeft: `4px solid ${theme.colorScheme === 'dark' ? '#ff7f2aff' : 'black'}`,
+      backgroundColor: theme.colorScheme === 'dark' ? 'rgba(255, 127, 42, 1)' : 'rgba(255,255,255,0.4)',
+
+    },
   },
   numberInput: {
     backgroundColor: theme.colorScheme === 'dark' ? 'grey' : 'white',
@@ -16,7 +22,12 @@ const useStyles = createStyles((theme) => ({
   deleteCell: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'baseline',
+    alignItems: 'center',
+    height: '50px',
+  },
+  badge: {
+    backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'black',
+    color: theme.colorScheme === 'dark' ? 'black' : 'white',
   },
   header: {
     backgroundColor: 'rgba(255,255,255,0.2)',
@@ -28,7 +39,7 @@ export default function ModulesTable({modules, deleteMethod, type}) {
 
   const ths = (
     <tr>
-      <th>Module</th>
+      <th>{type === 'm' ? 'Modules' : 'Constraints'}</th>
       <th>Amount</th>
       <th>Remove</th>
     </tr>
@@ -37,13 +48,24 @@ export default function ModulesTable({modules, deleteMethod, type}) {
   const rows = modules.map((module) => {
     return (
           <tr key={module} className={classes.line}>
-            <td className={classes.nameDisplay}>{module}</td>
+            <td className={classes.nameDisplay}>
+              <Badge
+                className={classes.badge}
+                variant="filled"
+                size="xl"
+                radius="sm"
+              >
+                {module}
+              </Badge>
+            </td>
             {/* eslint-disable-next-line max-len */}
             <td><NumberInput
               classNames={{input: classes.numberInput}}
               defaultValue={1}
               min={1}
               max={99}
+              stepHoldDelay={500}
+              stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
             />
             </td>
             {/* eslint-disable-next-line max-len */}

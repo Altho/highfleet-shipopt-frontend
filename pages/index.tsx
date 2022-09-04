@@ -1,4 +1,4 @@
-import { Container, createStyles, Select } from "@mantine/core";
+import { Container, createStyles, Select, MediaQuery } from "@mantine/core";
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
 import SelectModule from '../components/Select-Module/SelectModule';
 import { useState } from "react";
@@ -33,7 +33,9 @@ const useStyles = createStyles((theme) => ({
     boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px;',
   },
   container: {
-    backgroundColor: theme.colorScheme === 'dark' ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.5)',
+    backgroundColor: theme.colorScheme === 'dark' ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)',
+    boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+    backdropFilter: 'blur(8px)',
     paddingTop: '10px',
     paddingBottom: '50px',
   }
@@ -78,6 +80,10 @@ export default function HomePage({ modules, constraints }) {
 return (
   <main className={classes.mainDiv}>
     <Header />
+    <MediaQuery
+      query="(max-width: 1200px)"
+      styles={{ backgroundColor: 'transparent' }}
+    >
     <Container className={classes.container}>
     <Title type='m'>Modules</Title>
     <SelectModule
@@ -96,6 +102,7 @@ return (
     />
     <ModulesTable modules={selectedConstraints} deleteMethod={handleDelete} type="c" />
     </Container>
+    </MediaQuery>
   </main>
 );
 }
