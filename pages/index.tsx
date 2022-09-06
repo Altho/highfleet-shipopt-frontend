@@ -5,14 +5,13 @@ import { useState } from "react";
 import ModulesTable from "../components/ModulesTable/ModulesTable";
 import Header from "../components/Layout/Header";
 import Title  from "../components/Layout/Title";
+import { ModuleListTypes } from "../types/moduleList.types";
 
 export const getServerSideProps = async () => {
   const req = await fetch('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/');
   const res = await req.json();
 
   const { modules, constraints } = res;
-
-  console.log('moduuuules', modules);
 
   return {
     props: {
@@ -44,7 +43,23 @@ const useStyles = createStyles((theme) => ({
 export default function HomePage({ modules, constraints }) {
   const { classes } = useStyles();
 
+  const moduleObject =
+    modules.map((module) => (
+      { value: module.id,
+        label: module.id,
+        group: module.type }
+    ));
 
+  const constraintObject = () => (
+    constraints.map((constraint) => (
+      { current: constraint.current,
+        min: constraint.min,
+        max: constraint.max,
+        name: constraint.name }
+    )));
+
+  const [moduleList, setModuleList] = useState(moduleObject);
+  const [constraintList, setConstraintList] = useState(constraintObject);
   const [modulesValue, setModulesValue] = useState();
   const [constraintsValue, setConstraintsValue] = useState();
   const [selectedModules, setSelectedModules] = useState([]);
@@ -52,24 +67,23 @@ export default function HomePage({ modules, constraints }) {
 
 
   const handleSelect = (newValue: string, type: string) => {
-    const moduleIndex = modules.indexOf(newValue);
-    const constraintsIndex = constraints.indexOf(newValue);
-    console.log('type', type);
+
+
     if (type === 'm') {
       setSelectedModules(selectedModules => [...selectedModules, newValue]);
-      modules.splice(moduleIndex, moduleIndex + 1);
+      setModuleList(moduleList.filter((module) => module.value !== newValue));
       return;
     }
     setSelectedConstraints(selectedConstraints => [...selectedConstraints, newValue]);
-    constraints.splice(constraintsIndex, constraintsIndex + 1);
+    constraints.filter((constraint) => constraint.id !== newValue);
   };
 
   const handleDelete = (module, type) => {
-    console.log('triggered', module,type);
     if (type === 'm') {
+      const selectedObject = moduleObject.find((mod) => mod.value === module);
       setSelectedModules(prevState => prevState.filter(elem => elem !== module));
-      modules.push(module);
-      modules.sort();
+      setModuleList(moduleList => [selectedObject, ...moduleList]);
+      // setModuleList(moduleList.sort());
       setModulesValue(null);
       return;
     }
@@ -90,19 +104,19 @@ return (
     <Container className={classes.container}>
     <Title type='m'>Modules</Title>
     <SelectModule
-      modules={modules}
+      modules={moduleList}
       value={modulesValue}
       handleSelect={handleSelect}
       type={'m'}
     />
     <ModulesTable modules={selectedModules} deleteMethod={handleDelete} type="m" />
       <Title type='c'>Constraints</Title>
-    <SelectModule
-      modules={constraints}
-      value={constraintsValue}
-      handleSelect={handleSelect}
-      type={'c'}
-    />
+    {/*<SelectModule*/}
+    {/*  modules={constraints}*/}
+    {/*  value={constraintsValue}*/}
+    {/*  handleSelect={handleSelect}*/}
+    {/*  type={'c'}*/}
+    {/*/>*/}
     <ModulesTable modules={selectedConstraints} deleteMethod={handleDelete} type="c" />
     </Container>
     </MediaQuery>

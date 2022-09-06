@@ -1,4 +1,4 @@
-import { createStyles, Table, NumberInput, Badge, Slider, RangeSlider } from "@mantine/core";
+import { createStyles, Image, Table, NumberInput, Badge, Slider, RangeSlider } from "@mantine/core";
 import Delete from './Delete';
 import { IconGasStation, IconRocket } from "@tabler/icons";
 
@@ -33,6 +33,9 @@ const useStyles = createStyles((theme) => ({
   header: {
     backgroundColor: 'rgba(255,255,255,0.2)',
   },
+  shadow: {
+    dropShadow: '16px 16px 10px black',
+  },
   sliderRoot: {
     width: '40vw',
   },
@@ -40,9 +43,14 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'black',
   },
   thumb: {
-    backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'black',
-    border: theme.colorScheme === 'dark' ? '#FF8C00 3px solid' : 'darkgrey 3px solid',
+    backgroundColor: theme.colorScheme === 'dark' ? 'transparent' : 'transparent',
+    // border: theme.colorScheme === 'dark' ? 'black 3px solid' : 'darkgrey 3px solid',
     color: theme.colorScheme === 'dark' ? 'black' : 'white',
+    borderWidth:0,
+  },
+  svg: {
+    backgroundColor: 'orange',
+    fill: 'orange',
   },
 }));
 
@@ -81,10 +89,10 @@ export default function ModulesTable({ modules, deleteMethod, type }) {
                              </td>)
               :
               <td><RangeSlider
-                thumbSize={30}
-                thumbChildren={module === 'twr' ?( <IconRocket size={20} key={1} />, <IconRocket size={20} key={1} /> )
+                thumbSize={40}
+                thumbChildren={module === 'twr' ?( <DarkRocket />, <DarkRocket/> )
                   :
-                 ( <IconGasStation size={20} key={1} />, <IconGasStation size={20} key={1} />)
+                 ( <IconGasStation size={40} key={1} />, <IconGasStation size={40} key={1} />)
                 }
                 classNames={{
                   root: classes.sliderRoot,
@@ -105,3 +113,9 @@ export default function ModulesTable({ modules, deleteMethod, type }) {
     </Table>
   );
 }
+
+const DarkRocket = () => {
+  return (
+    <Image style={{pointerEvents: 'none', filter: 'drop-shadow(4px 4px 5px black)'}} src={'./dark_rocket2.svg'}/>
+  )
+};

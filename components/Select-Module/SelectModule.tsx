@@ -3,6 +3,7 @@ import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 import { createContext, useContext, useState } from "react";
 import ModulesTable from "../ModulesTable/ModulesTable";
 import { IconCirclePlus } from "@tabler/icons";
+import { ModuleListTypes } from "../../types/moduleList.types";
 
 
 const useStyles = createStyles((theme) => ({
@@ -65,13 +66,8 @@ export default function SelectModule({ modules, value, handleSelect, type }) {
 
   const { classes } = useStyles();
   const returnType = () => type === 'c' ? 'c' : 'm';
-  const moduleList: { value: string, label: string }[] = [
-    modules.map((module: string) => (
-      { value: module, label: module }
-    )),
-  ];
 
-  console.log('modules', moduleList);
+
   return (
     <>
       <Select
@@ -84,15 +80,15 @@ export default function SelectModule({ modules, value, handleSelect, type }) {
           rightSection: classes.rightSection,
           disabled: classes.disabled,
       }}
-        disabled={!modules.length}
+        // disabled={!modules.length}
         searchable
         placeholder={'please select'}
         value={value}
         required
         label={type === 'm' ? 'Select a module' : 'Select a constraint'}
-        onChange={(value: string) => handleSelect(value, returnType())}
+        onChange={(value) => handleSelect(value, returnType())}
         icon={<IconCirclePlus />}
-        data={moduleList[0]}
+        data={modules}
       />
     </>
   );
