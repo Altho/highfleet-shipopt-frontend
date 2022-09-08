@@ -67,6 +67,8 @@ export default function SelectModule({ modules, value, handleSelect, type }) {
   const { classes } = useStyles();
   const returnType = () => type === 'c' ? 'c' : 'm';
 
+  console.log('constraints :', modules);
+
 
   return (
     <>
@@ -80,7 +82,7 @@ export default function SelectModule({ modules, value, handleSelect, type }) {
           rightSection: classes.rightSection,
           disabled: classes.disabled,
       }}
-        // disabled={!modules.length}
+        disabled={!modules.length}
         searchable
         placeholder={'please select'}
         value={value}

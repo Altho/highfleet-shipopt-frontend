@@ -57,6 +57,8 @@ const useStyles = createStyles((theme) => ({
 export default function ModulesTable({ modules, deleteMethod, type }) {
   const { classes } = useStyles();
 
+  console.log('table modules', modules);
+
   const ths = (
     <tr>
       <th>{type === 'm' ? 'Modules' : 'Constraints'}</th>
@@ -90,6 +92,8 @@ export default function ModulesTable({ modules, deleteMethod, type }) {
               :
               <td><RangeSlider
                 thumbSize={40}
+                min={module.min}
+                max={module.max}
                 thumbChildren={module === 'twr' ?( <DarkRocket />, <DarkRocket/> )
                   :
                  ( <IconGasStation size={40} key={1} />, <IconGasStation size={40} key={1} />)

@@ -50,13 +50,15 @@ export default function HomePage({ modules, constraints }) {
         group: module.type }
     ));
 
-  const constraintObject = () => (
+  const constraintObject =
     constraints.map((constraint) => (
-      { current: constraint.current,
+      {
+        label: constraint.common_name,
+        value: constraint.id,
         min: constraint.min,
         max: constraint.max,
-        name: constraint.name }
-    )));
+      }
+    ));
 
   const [moduleList, setModuleList] = useState(moduleObject);
   const [constraintList, setConstraintList] = useState(constraintObject);
@@ -75,7 +77,7 @@ export default function HomePage({ modules, constraints }) {
       return;
     }
     setSelectedConstraints(selectedConstraints => [...selectedConstraints, newValue]);
-    constraints.filter((constraint) => constraint.id !== newValue);
+    setConstraintList(constraintList.filter((module) => module.value !== newValue));
   };
 
   const handleDelete = (module, type) => {
@@ -87,9 +89,10 @@ export default function HomePage({ modules, constraints }) {
       setModulesValue(null);
       return;
     }
+    const selectedConstraint = constraintObject.find((mod) => mod.value === module);
     setSelectedConstraints(prevState => prevState.filter(elem => elem !== module));
-    constraints.push(module);
-    constraints.sort();
+    setConstraintList(constraintList => [selectedConstraint, ...constraintList]);
+
     setConstraintsValue(null);
 
   };
@@ -111,12 +114,12 @@ return (
     />
     <ModulesTable modules={selectedModules} deleteMethod={handleDelete} type="m" />
       <Title type='c'>Constraints</Title>
-    {/*<SelectModule*/}
-    {/*  modules={constraints}*/}
-    {/*  value={constraintsValue}*/}
-    {/*  handleSelect={handleSelect}*/}
-    {/*  type={'c'}*/}
-    {/*/>*/}
+    <SelectModule
+      modules={constraintList}
+      value={constraintsValue}
+      handleSelect={handleSelect}
+      type={'c'}
+    />
     <ModulesTable modules={selectedConstraints} deleteMethod={handleDelete} type="c" />
     </Container>
     </MediaQuery>
