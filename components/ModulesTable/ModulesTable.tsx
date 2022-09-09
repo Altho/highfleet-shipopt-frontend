@@ -1,8 +1,33 @@
-import { createStyles, Image, Table, NumberInput, Badge, Slider, RangeSlider } from "@mantine/core";
+import { createStyles, Image, Table, NumberInput, Badge, Slider, RangeSlider, Group } from "@mantine/core";
 import Delete from './Delete';
-import { IconGasStation, IconRocket } from "@tabler/icons";
+import { IconGasStation, IconRocket, IconCurrencyDollar, IconSword } from "@tabler/icons";
+import { useState } from "react";
+import { CreateBadges } from "./CreateBadges";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles((theme, _params, getRef) => ({
+  additionalInfos: {
+    display: 'none',
+    width: '100%',
+    padding: '10px',
+    overflowX: 'visible',
+    // height: '300px',
+    // backgroundColor: 'red',
+    // display: 'contents',
+
+  },
+  showInfos: {
+      // transform: 'scale(1.01)',
+      // boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;',
+      display: 'block',
+  },
+  mainTable: {
+    width: '100%',
+    tableLayout: 'auto',
+  },
+  mainRow: {
+    width: '100%',
+
+  },
   line: {
     backgroundColor: theme.colorScheme === 'dark' ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.4)',
     '&:hover': {
@@ -10,9 +35,10 @@ const useStyles = createStyles((theme) => ({
       // boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;',
       borderLeft: `4px solid ${theme.colorScheme === 'dark' ? '#ff7f2aff' : 'black'}`,
       backgroundColor: theme.colorScheme === 'dark' ? 'rgba(255, 127, 42, 1)' : 'rgba(255,255,255,0.4)',
-
     },
+
   },
+
   numberInput: {
     backgroundColor: theme.colorScheme === 'dark' ? 'grey' : 'white',
   },
@@ -27,8 +53,9 @@ const useStyles = createStyles((theme) => ({
     height: '50px',
   },
   badge: {
-    backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'black',
-    color: theme.colorScheme === 'dark' ? 'black' : 'white',
+    // backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'black',
+    // color: theme.colorScheme === 'dark' ? 'black' : 'white',
+    alignItems: 'flex-start',
   },
   header: {
     backgroundColor: 'rgba(255,255,255,0.2)',
@@ -56,8 +83,13 @@ const useStyles = createStyles((theme) => ({
 
 export default function ModulesTable({ modules, deleteMethod, type }) {
   const { classes } = useStyles();
+  const [isHovering, setIsHovering] = useState();
 
-  console.log('table modules', modules);
+  const handleMouseOver = (value) => {
+    isHovering === value ? setIsHovering(null): setIsHovering(value)  ;
+  };
+
+
 
   const ths = (
     <tr>
@@ -68,16 +100,14 @@ export default function ModulesTable({ modules, deleteMethod, type }) {
   );
 
   const rows = modules.map((module) => (
-          <tr key={module.id} className={classes.line}>
-            <td className={classes.nameDisplay}>
-              <Badge
-                className={classes.badge}
-                variant="filled"
-                size="xl"
-                radius="sm"
-              >
-                {module.label}
-              </Badge>
+ <>
+    <tr key={module.value}
+        className={classes.line}>
+            <td
+              className={classes.nameDisplay}
+              onClick={() => handleMouseOver(module.value)}
+            >
+              <div>{module.label}</div>
             </td>
             {/* eslint-disable-next-line max-len */}
             {type === 'm' ? (<td><NumberInput
@@ -92,9 +122,10 @@ export default function ModulesTable({ modules, deleteMethod, type }) {
               :
               <td><RangeSlider
                 thumbSize={40}
+                label={value => `${value} ${module.units}`}
                 min={module.min}
                 max={module.max}
-                thumbChildren={module.id === 'twr' ?( <DarkRocket />, <DarkRocket/> )
+                thumbChildren={module.value === 'twr' ?( <DarkRocket />, <DarkRocket/> )
                   :
                  ( <IconGasStation size={40} key={1} />, <IconGasStation size={40} key={1} />)
                 }
@@ -107,13 +138,22 @@ export default function ModulesTable({ modules, deleteMethod, type }) {
               </td> }
             {/* eslint-disable-next-line max-len */}
             <td className={classes.deleteCell}><Delete method={() => deleteMethod(module, type)} /></td>
-          </tr>
+    </tr>
+  <div className={classes.mainRow}>
+    <div className={`${classes.additionalInfos} ${isHovering === module.value ? classes.showInfos : ''}`}>
+     <Group>
+       <CreateBadges module={module} />
+     </Group>
+    </div>
+  </div>
+ </>
+
     ));
 
   return (
-    <Table captionSide="bottom" striped highlightOnHover>
+    <Table className={classes.mainTable} captionSide="bottom" striped highlightOnHover>
       <thead className={classes.header}>{modules.length ? ths : null}</thead>
-      <tbody>{rows}</tbody>
+      <tbody className={classes.mainTable}>{rows}</tbody>
     </Table>
   );
 }
@@ -123,3 +163,5 @@ const DarkRocket = () => {
     <Image style={{pointerEvents: 'none', filter: 'drop-shadow(4px 4px 5px black)'}} src={'./dark_rocket2.svg'}/>
   )
 };
+
+

@@ -23,9 +23,9 @@ export const getServerSideProps = async () => {
 
 const useStyles = createStyles((theme) => ({
   mainDiv: {
-    backgroundImage: theme.colorScheme === 'dark' ? 'url(../bg2.svg), url(../bg1.svg), linear-gradient(to top, #ba8b02, #181818)' : 'url(../bg2_light.svg), url(../bg1_light.svg), linear-gradient(to top, #334d50, #cbcaa5)',
+    backgroundImage: theme.colorScheme === 'dark' ? 'url(../bg3.png), linear-gradient(to top, #ba8b02, #181818)' : 'url(../bg2_light.svg), url(../bg1_light.svg), linear-gradient(to top, #334d50, #cbcaa5)',
     backgroundPosition: 'bottom',
-    backgroundSize: 'contain',
+    backgroundSize: 'cover',
     backgroundAttachment: 'fixed',
     backgroundRepeat: 'no-repeat',
     minHeight: '100vh',
@@ -47,7 +47,19 @@ export default function HomePage({ modules, constraints }) {
     modules.map((module) => (
       { value: module.id,
         label: module.common_name,
-        group: module.type }
+        group: module.type,
+        cost: module.cost,
+        fuel_cap: module.fuel_cap,
+        hp: module.hp,
+        squares: module.squares,
+        weight: module.weight,
+        fuel_rate: module.fuel_rate,
+        width: module.width,
+        height: module.height,
+        thrust: module.thrust,
+        firepower: module.firewpower,
+        energy: module.energy,
+      }
     ));
 
   const constraintObject =
@@ -57,6 +69,7 @@ export default function HomePage({ modules, constraints }) {
         value: constraint.id,
         min: constraint.min,
         max: constraint.max,
+        units: constraint.units,
       }
     ));
 
@@ -75,6 +88,7 @@ export default function HomePage({ modules, constraints }) {
       const returnValueObject = moduleList.find((mod) => mod.value === newValue);
       setSelectedModules(selectedModules => [...selectedModules, returnValueObject]);
       setModuleList(moduleList.filter((module) => module.value !== newValue));
+      console.log(selectedModules);
       return;
     }
     const returnValueObject = constraintList.find((mod) => mod.value === newValue);
