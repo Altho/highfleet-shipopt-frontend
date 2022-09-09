@@ -64,6 +64,7 @@ const useStyles = createStyles((theme) => ({
 export default function SelectModule({ modules, value, handleSelect, type }) {
 
 
+
   const { classes } = useStyles();
   const returnType = () => type === 'c' ? 'c' : 'm';
 

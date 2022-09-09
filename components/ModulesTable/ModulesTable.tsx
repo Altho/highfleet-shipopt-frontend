@@ -68,7 +68,7 @@ export default function ModulesTable({ modules, deleteMethod, type }) {
   );
 
   const rows = modules.map((module) => (
-          <tr key={module} className={classes.line}>
+          <tr key={module.id} className={classes.line}>
             <td className={classes.nameDisplay}>
               <Badge
                 className={classes.badge}
@@ -76,15 +76,15 @@ export default function ModulesTable({ modules, deleteMethod, type }) {
                 size="xl"
                 radius="sm"
               >
-                {module}
+                {module.label}
               </Badge>
             </td>
             {/* eslint-disable-next-line max-len */}
             {type === 'm' ? (<td><NumberInput
               classNames={{ input: classes.numberInput }}
               defaultValue={1}
-              min={1}
-              max={99}
+              min={module.min}
+              max={module.max}
               stepHoldDelay={500}
               stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
             />
@@ -94,7 +94,7 @@ export default function ModulesTable({ modules, deleteMethod, type }) {
                 thumbSize={40}
                 min={module.min}
                 max={module.max}
-                thumbChildren={module === 'twr' ?( <DarkRocket />, <DarkRocket/> )
+                thumbChildren={module.id === 'twr' ?( <DarkRocket />, <DarkRocket/> )
                   :
                  ( <IconGasStation size={40} key={1} />, <IconGasStation size={40} key={1} />)
                 }

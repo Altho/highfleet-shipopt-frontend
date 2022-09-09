@@ -46,7 +46,7 @@ export default function HomePage({ modules, constraints }) {
   const moduleObject =
     modules.map((module) => (
       { value: module.id,
-        label: module.id,
+        label: module.common_name,
         group: module.type }
     ));
 
@@ -72,27 +72,29 @@ export default function HomePage({ modules, constraints }) {
 
 
     if (type === 'm') {
-      setSelectedModules(selectedModules => [...selectedModules, newValue]);
+      const returnValueObject = moduleList.find((mod) => mod.value === newValue);
+      setSelectedModules(selectedModules => [...selectedModules, returnValueObject]);
       setModuleList(moduleList.filter((module) => module.value !== newValue));
       return;
     }
-    setSelectedConstraints(selectedConstraints => [...selectedConstraints, newValue]);
+    const returnValueObject = constraintList.find((mod) => mod.value === newValue);
+    setSelectedConstraints(selectedConstraints => [...selectedConstraints, returnValueObject]);
     setConstraintList(constraintList.filter((module) => module.value !== newValue));
   };
 
   const handleDelete = (module, type) => {
+
     if (type === 'm') {
-      const selectedObject = moduleObject.find((mod) => mod.value === module);
-      setSelectedModules(prevState => prevState.filter(elem => elem !== module));
+      const selectedObject = moduleObject.find((mod) => mod.value === module.value);
+      setSelectedModules(prevState => prevState.filter(elem => elem.value !== selectedObject.value));
       setModuleList(moduleList => [selectedObject, ...moduleList]);
       // setModuleList(moduleList.sort());
       setModulesValue(null);
       return;
     }
-    const selectedConstraint = constraintObject.find((mod) => mod.value === module);
-    setSelectedConstraints(prevState => prevState.filter(elem => elem !== module));
+    const selectedConstraint = constraintObject.find((mod) => mod.value === module.value);
+    setSelectedConstraints(prevState => prevState.filter(elem => elem.value !== selectedConstraint.value));
     setConstraintList(constraintList => [selectedConstraint, ...constraintList]);
-
     setConstraintsValue(null);
 
   };
