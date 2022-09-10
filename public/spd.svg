@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   class="icon icon-tabler icon-tabler-bolt"
+   width="15.999807"
+   height="19.999792"
+   viewBox="0 0 15.999807 19.999792"
+   stroke-width="2"
+   stroke="currentColor"
+   fill="none"
+   stroke-linecap="round"
+   stroke-linejoin="round"
+   version="1.1"
+   id="svg1607"
+   sodipodi:docname="spd.svg"
+   inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1611" />
+  <sodipodi:namedview
+     id="namedview1609"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="26.041667"
+     inkscape:cx="8.0064"
+     inkscape:cy="10.0032"
+     inkscape:window-width="1296"
+     inkscape:window-height="847"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1607" />
+  <path
+     stroke="none"
+     d="M -4.0000963,-2 H 19.999904 V 22 H -4.0000963 Z"
+     fill="none"
+     id="path1603" />
+  <polyline
+     points="13 3 13 10 19 10 11 21 11 14 5 14 13 3"
+     id="polyline1605"
+     transform="translate(-4.0000963,-2)" />
+  <path
+     style="fill:#ff7d00;stroke-width:0.0768"
+     d="M 8.0107827,13.776353 7.9999037,11.7088 7.8881097,11.507034 C 7.8266237,11.396062 7.7186167,11.261258 7.6480947,11.207468 7.3678667,10.993727 7.4239847,10.9984 5.137137,10.9984 c -1.2831348,0 -2.1113936,-0.01401 -2.1036333,-0.03559 0.00704,-0.01957 1.11872,-1.555907 2.4704,-3.4140743 l 2.4576,-3.3784856 0.0192,2.060475 c 0.01896,2.0344559 0.02027,2.0624799 0.104117,2.2192379 0.112103,0.209591 0.299784,0.393273 0.490231,0.479788 0.143538,0.06521 0.304364,0.07022 2.2760523,0.07101 1.16688,4.64e-4 2.1216,0.01066 2.1216,0.02266 0,0.0182 -4.6685863,6.455193 -4.8814893,6.730538 -0.06743,0.08721 -0.06989,0.02678 -0.08043,-1.9776 z"
+     id="path1707" />
+</svg>

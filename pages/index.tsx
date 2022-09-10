@@ -1,4 +1,4 @@
-import { Container, createStyles, Select, MediaQuery } from "@mantine/core";
+import { Container, createStyles, Select, MediaQuery, Button } from "@mantine/core";
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
 import SelectModule from '../components/Select-Module/SelectModule';
 import { useState } from "react";
@@ -96,6 +96,11 @@ export default function HomePage({ modules, constraints }) {
     setConstraintList(constraintList.filter((module) => module.value !== newValue));
   };
 
+  const handleSubmit = () => {
+    console.log(selectedModules);
+    console.log(selectedConstraints);
+  }
+
   const handleDelete = (module, type) => {
 
     if (type === 'm') {
@@ -137,6 +142,7 @@ return (
       type={'c'}
     />
     <ModulesTable modules={selectedConstraints} deleteMethod={handleDelete} type="c" />
+      <Button onClick={handleSubmit}>Log request</Button>
     </Container>
     </MediaQuery>
   </main>

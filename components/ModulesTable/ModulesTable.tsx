@@ -9,7 +9,6 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     display: 'none',
     width: '100%',
     padding: '10px',
-    overflowX: 'visible',
     // height: '300px',
     // backgroundColor: 'red',
     // display: 'contents',
@@ -42,6 +41,11 @@ const useStyles = createStyles((theme, _params, getRef) => ({
   numberInput: {
     backgroundColor: theme.colorScheme === 'dark' ? 'grey' : 'white',
   },
+  numberDisplay: {
+    verticalAlign: 'top',
+    height: '50px',
+
+  },
   nameDisplay: {
     width: '80%',
     fontFamily: 'Changa, sans-serif',
@@ -49,8 +53,9 @@ const useStyles = createStyles((theme, _params, getRef) => ({
   deleteCell: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    verticalAlign: 'top',
     height: '50px',
+
   },
   badge: {
     // backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'black',
@@ -108,9 +113,14 @@ export default function ModulesTable({ modules, deleteMethod, type }) {
               onClick={() => handleMouseOver(module.value)}
             >
               <div>{module.label}</div>
+              <div className={`${classes.additionalInfos} ${isHovering === module.value ? classes.showInfos : ''}`}>
+                <Group>
+                  <CreateBadges module={module} />
+                </Group>
+              </div>
             </td>
             {/* eslint-disable-next-line max-len */}
-            {type === 'm' ? (<td><NumberInput
+            {type === 'm' ? (<td className={classes.numberDisplay}><NumberInput
               classNames={{ input: classes.numberInput }}
               defaultValue={1}
               min={module.min}
@@ -125,10 +135,7 @@ export default function ModulesTable({ modules, deleteMethod, type }) {
                 label={value => `${value} ${module.units}`}
                 min={module.min}
                 max={module.max}
-                thumbChildren={module.value === 'twr' ?( <DarkRocket />, <DarkRocket/> )
-                  :
-                 ( <IconGasStation size={40} key={1} />, <IconGasStation size={40} key={1} />)
-                }
+                thumbChildren={<DarkRocket path={module.value} />, <DarkRocket path={module.value}/>}
                 classNames={{
                   root: classes.sliderRoot,
                   bar: classes.bar,
@@ -140,11 +147,6 @@ export default function ModulesTable({ modules, deleteMethod, type }) {
             <td className={classes.deleteCell}><Delete method={() => deleteMethod(module, type)} /></td>
     </tr>
   <div className={classes.mainRow}>
-    <div className={`${classes.additionalInfos} ${isHovering === module.value ? classes.showInfos : ''}`}>
-     <Group>
-       <CreateBadges module={module} />
-     </Group>
-    </div>
   </div>
  </>
 
@@ -158,9 +160,10 @@ export default function ModulesTable({ modules, deleteMethod, type }) {
   );
 }
 
-const DarkRocket = () => {
+const DarkRocket = ({path}) => {
+  console.log('path', path)
   return (
-    <Image style={{pointerEvents: 'none', filter: 'drop-shadow(4px 4px 5px black)'}} src={'./dark_rocket2.svg'}/>
+    <Image style={{pointerEvents: 'none', filter: 'drop-shadow(4px 4px 5px black)'}} src={`../${path}.svg`}/>
   )
 };
 
