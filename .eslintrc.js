@@ -10,6 +10,11 @@ module.exports = {
     {
       files: ['**/?(*.)+(spec|test).[jt]s?(x)'],
       extends: ['plugin:testing-library/react'],
+      "rules": { // Here it worked
+        "@typescript-eslint/dot-notation": "error",
+        "no-shadow": "off",
+      }
+
     },
   ],
   parserOptions: {
@@ -17,5 +22,7 @@ module.exports = {
   },
   rules: {
     'react/react-in-jsx-scope': 'off',
+    "@typescript-eslint/dot-notation": "error",
+    "no-shadow": "off",
   },
 };
