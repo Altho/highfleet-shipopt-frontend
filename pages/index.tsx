@@ -102,7 +102,7 @@ export default function HomePage({ modules, constraints }: IndexProps) {
     console.log(selectedConstraints);
   };
 
-  const handleDelete = (module: Module, type: string) => {
+  const handleDelete = (module: Module, type: string): void => {
     if (type === 'm') {
       const selectedObject = modules.find((mod) => mod.value === module.value);
       if (selectedObject) {

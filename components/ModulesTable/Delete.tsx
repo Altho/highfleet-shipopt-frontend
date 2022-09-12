@@ -1,5 +1,5 @@
-import { IconCircleMinus } from "@tabler/icons";
-import { ActionIcon, createStyles } from "@mantine/core";
+import { IconCircleMinus } from '@tabler/icons';
+import { ActionIcon, createStyles } from '@mantine/core';
 
 const useStyles = createStyles((theme) => ({
   main: {
@@ -11,7 +11,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function Delete({method}) {
+export default function Delete({ method }: any) {
  const { classes } = useStyles();
   return (
     <ActionIcon>

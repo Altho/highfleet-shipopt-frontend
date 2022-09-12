@@ -1,5 +1,6 @@
 import { createStyles } from '@mantine/core';
-import { IconUnlink, IconHexagons } from "@tabler/icons";
+import { IconUnlink, IconHexagons } from '@tabler/icons';
+import { FC } from 'react';
 
 const useStyles = createStyles((theme) => ({
   main: {
@@ -28,17 +29,22 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'white',
   },
 }));
-
-export default function Title({children, type}) {
+interface Props {
+  children: React.ReactNode,
+  type: string
+}
+export default function Title({ children, type }: Props) {
   const { classes } = useStyles();
 
   return (
     <div className={classes.main}>
       <div className={classes.title}>
+        <>
         {type === 'm' ? <IconHexagons size={32} /> : <IconUnlink size={32} />}
         {children}
+        </>
       </div>
       <span className={classes.chevron} />
     </div>
   );
-}
+};

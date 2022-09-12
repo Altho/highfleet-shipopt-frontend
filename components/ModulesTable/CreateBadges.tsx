@@ -29,6 +29,7 @@ const useStyles = createStyles((theme) => ({
     // backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'black',
     // color: theme.colorScheme === 'dark' ? 'black' : 'white',
     alignItems: 'flex-start',
+    boxShadow: 'inset 0 3px 6px rgba(0,0,0,0.16), 0 4px 6px rgba(0,0,0,0.45)',
   },
 }));
 

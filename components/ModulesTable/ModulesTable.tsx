@@ -1,13 +1,12 @@
-import { createStyles, Image, Table, NumberInput, Badge, Slider, RangeSlider, Group } from "@mantine/core";
+import { createStyles, Image, NumberInput, RangeSlider, Group } from '@mantine/core';
+import { useState } from 'react';
 import Delete from './Delete';
-import { IconGasStation, IconRocket, IconCurrencyDollar, IconSword } from "@tabler/icons";
-import { useState } from "react";
-import { CreateBadges } from "./CreateBadges";
+import { CreateBadges } from './CreateBadges';
+import { Constraint, Module } from '../../types/modules.types';
 
-
-const useStyles = createStyles((theme, _params, getRef) => ({
+const useStyles = createStyles((theme) => ({
   additionalInfos: {
-    visibility: 'hidden',
+    display: 'none',
     width: '100%',
     padding: '10px',
     border: '3px solid white',
@@ -21,22 +20,19 @@ const useStyles = createStyles((theme, _params, getRef) => ({
   },
   module: {
     clipPath: 'polygon(0 100%, 0 88%, 1% 78%, 1% 21%, 0 11%, 0 0, 14% 0%, 36% 0, 38% 6%, 48% 6%, 51% 0%, 100% 0, 100% 11%, 100% 88%, 98% 100%, 74% 99%, 73% 93%, 63% 93%, 62% 99%)',
-    backgroundColor: 'red',
-    position: 'relative',
     padding: '10px',
-    backgroundImage: 'url("./rustedmetal.jpg")',
+    backgroundImage: theme.colorScheme === 'dark' ? 'url("./rustedmetal.jpg")' : 'url("./concrete2.jpg")',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     boxShadow: 'inset 0.2em 0.2em 0.2em 0 rgba(255,255,255,0.5), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5)',
   },
   showInfos: {
-      // transform: 'scale(1.01)',
-      // boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;',
-      display: 'flex',
-      visibility: 'visible',
-      transition: 'margin 1s linear',
-      marginTop: '0',
-      justifyContent: 'center',
+    // transform: 'scale(1.01)',
+    // boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;',
+    display: 'flex',
+    transition: 'margin 1s linear',
+    marginTop: '0',
+    justifyContent: 'center',
   },
   ribbon: {
     width: '9px',
@@ -57,7 +53,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
   nameDisplay: {
     fontFamily: 'Bungee, sans-serif',
     color: 'white',
-    width:'40%',
+    width: '20%',
     marginLeft: '20px',
     padding: '10px',
     webkitTextStrokeWidth: '1px',
@@ -68,6 +64,14 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     backgroundRepeat: 'no-repeat',
     borderRadius: '10px',
     // boxShadow: 'gba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px'
+  },
+  badgeContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    padding: '0 20px 0 20px',
+    gap: '5px',
+    justifyContent: 'center',
+    maxWidth: '50%',
   },
   deleteCell: {
     display: 'flex',
@@ -81,6 +85,7 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',
+    flexWrap: 'wrap',
   },
   moduleContainer: {
     position: 'relative',
@@ -100,47 +105,62 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     width: '40vw',
 
   },
-  // bar: {
-  //   backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'black',
-  // },
+  bar: {
+    backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'black',
+  },
   thumb: {
     backgroundColor: theme.colorScheme === 'dark' ? 'transparent' : 'transparent',
     // border: theme.colorScheme === 'dark' ? 'black 3px solid' : 'darkgrey 3px solid',
     color: theme.colorScheme === 'dark' ? 'black' : 'white',
-    borderWidth:0,
+    borderWidth: 0,
 
   },
-  // svg: {
-  //   backgroundColor: 'orange',
-  //   fill: 'orange',
-  //
-  // },
 }));
 
+type Props = {
+  modules: Module[],
+  deleteMethod: Function,
+  type: string,
+};
 
-
-export default function ModulesTable({ modules, deleteMethod, type }) {
-  console.log('module offset :', modules);
+const SliderImage = ({ path }: any) => {
   const { classes } = useStyles();
-  const [isHovering, setIsHovering] = useState();
+  return (
+    <Image
+      style={{ pointerEvents: 'none', filter: 'drop-shadow(4px 4px 5px black)' }}
+      src={`../${path}.svg`}
+    />
+  );
+};
 
-  const handleMouseOver = (value) => {
+export default function ModulesTable({ modules, deleteMethod, type }: Props) {
+  const { classes } = useStyles();
+  const [isHovering, setIsHovering] = useState<any>();
+
+  const handleMouseOver = (value: string) => {
     isHovering === value ? setIsHovering(null) : setIsHovering(value);
   };
 
-
-
-  const rows = modules.map((module) => (
+  const rows = modules.map((module: Module) => (
     <div className={classes.moduleContainer}>
-      <div className={classes.ribbon}></div>
-      <div key={module.value} className={classes.module} style={ { backgroundPosition: module.offset }}>
-      <div onClick={() => handleMouseOver(module.value)}
-           className={classes.mainInfos}
+      <div className={classes.ribbon} />
+      <div
+        key={module.value}
+        className={classes.module}
+        style={{ backgroundPosition: module.offset }}
       >
-        <div className={classes.nameDisplay}>
-          {module.label}
-        </div>
-        {type === 'm' ? (<div className={classes.numberDisplay}><NumberInput
+        <div
+          onClick={() => handleMouseOver(module.value)}
+          className={classes.mainInfos}
+        >
+          <div className={classes.nameDisplay}>
+            {module.label}
+          </div>
+          <div className={classes.badgeContainer}>
+            <CreateBadges module={module} />
+          </div>
+
+          {type === 'm' ? (<div className={classes.numberDisplay}><NumberInput
             classNames={{ input: classes.numberInput }}
             defaultValue={1}
             min={module.min}
@@ -148,40 +168,30 @@ export default function ModulesTable({ modules, deleteMethod, type }) {
             stepHoldDelay={500}
             stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
           />
-          </div>)
-          :
-          <div><RangeSlider
-            thumbSize={40}
-            label={value => `${value} ${module.units}`}
-            min={module.min}
-            max={module.max}
-            thumbChildren={<sliderImage path={module.value} />, <sliderImage path={module.value}/>}
-            classNames={{
-              root: classes.sliderRoot,
-              bar: classes.bar,
-              thumb: classes.thumb,
-            }}
-          />
-          </div>}
-        <div className={classes.deleteCell}>
-          <Delete method={() => deleteMethod(module, type)} />
+                           </div>)
+            :
+            <div><RangeSlider
+              thumbSize={40}
+              label={value => `${value} ${module.units}`}
+              min={module.min}
+              max={module.max}
+              thumbChildren={<SliderImage path={module.value} />, <SliderImage path={module.value} />}
+              classNames={{
+                root: classes.sliderRoot,
+                bar: classes.bar,
+                thumb: classes.thumb,
+              }}
+            />
+            </div>}
+          <div className={classes.deleteCell}>
+            <Delete method={() => deleteMethod(module, type)} />
+          </div>
         </div>
-      </div>
-    </div>
-      <div className={`${classes.additionalInfos} ${isHovering === module.value ? classes.showInfos : ''}`}>
-        <Group>
-          <CreateBadges module={module} />
-        </Group>
       </div>
     </div>
   ));
 
-  const sliderImage = ({path}) => {
-    const { classes } = useStyles();
-    return (
-      <Image className={classes.thumbImage} style={{pointerEvents: 'none', filter: 'drop-shadow(4px 4px 5px black)', }} src={`../${path}.svg`}/>
-    )
-  };
+
 
   return (
     <div className={classes.moduleContainer}>

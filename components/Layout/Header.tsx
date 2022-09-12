@@ -1,7 +1,7 @@
+import { Container, createStyles } from '@mantine/core';
 import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
-import { Container, createStyles } from "@mantine/core";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   main: {
     // width: '400px',
     height: '50px',
