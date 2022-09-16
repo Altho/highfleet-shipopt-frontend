@@ -44,6 +44,7 @@ export interface Module {
   firepower: number,
   energy: number,
   offset: string,
+  amount: number,
 }
 
 export interface Constraint {

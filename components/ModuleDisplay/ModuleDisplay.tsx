@@ -1,9 +1,8 @@
-import { createStyles, Image, NumberInput, RangeSlider, Group } from '@mantine/core';
 import { useState } from 'react';
-import Delete from './Delete';
-import { CreateBadges } from './CreateBadges';
-import { Constraint, Module } from '../../types/modules.types';
-import ModuleDisplay from "../ModuleDisplay/ModuleDisplay";
+import { createStyles, NumberInput, RangeSlider } from '@mantine/core';
+import { Module } from '../../types/modules.types';
+import { CreateBadges } from '../ModulesTable/CreateBadges';
+import Delete from '../ModulesTable/Delete';
 
 const useStyles = createStyles((theme) => ({
   additionalInfos: {
@@ -96,37 +95,62 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type Props = {
-  modules: Module[],
-  deleteMethod: Function,
-  selectedModules: any,
-  setSelectedModules: any,
-};
-
-export default function ModulesTable({ modules, deleteMethod, selectedModules, setSelectedModules }: Props) {
+export default function ModuleDisplay({ module, selectedModules, setSelectedModules, deleteMethod }) {
   const { classes } = useStyles();
-  const [isHovering, setIsHovering] = useState<any>();
 
-  const handleMouseOver = (value: string) => {
-    isHovering === value ? setIsHovering(null) : setIsHovering(value);
-  };
+  const [moduleObject, setModuleObject] = useState(module);
 
-  const generateModules = () => {
-    modules.map((module) => (
-      <ModuleDisplay
-        module={module}
-        selectedModules={selectedModules}
-        setSelectedModules={setSelectedModules}
-        deleteMethod={deleteMethod}
-      />
-    ));
+  const handleChange = (e, value) => {
+    setModuleObject(prevValues => ({ ...prevValues, ['amount']: e }));
+    setSelectedModules(prevValues => ({prevValues, [module]: moduleObject}))
+    console.log(selectedModules);
+    //     const foundModule: Module = selectedModules.find((mod) => mod.value === id);
+//     foundModule.amount = value;
+//     if (module) {
+// setSelectedModules((selectedModules: Module[]) => ({
+//           ...selectedModules,
+//           ...foundModule,
+//         }
+//       )
+//     );
+// }
   };
 
   return (
     <div className={classes.moduleContainer}>
-      {modules.map((mod) => (
-        <ModuleDisplay module={mod} selectedModules={selectedModules} setSelectedModules={setSelectedModules} deleteMethod={deleteMethod}/>
-      ))}
+      <div className={classes.moduleContainer}>
+        <div className={classes.ribbon} />
+        <div
+          key={module.value}
+          className={classes.module}
+          style={{ backgroundPosition: module.offset }}
+        >
+          <div
+            className={classes.mainInfos}
+          >
+            <div className={classes.nameDisplay}>
+              {module.label}
+            </div>
+            <div className={classes.badgeContainer}>
+              <CreateBadges module={module} />
+            </div>
+            <div className={classes.numberDisplay}><NumberInput
+              classNames={{ input: classes.numberInput }}
+              defaultValue={1}
+              // value={50}
+              onChange={(e, value) => handleChange(e, value)}
+              min={module.min}
+              max={module.max}
+              stepHoldDelay={500}
+              stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
+            />
+            </div>
+            <div className={classes.deleteCell}>
+              <Delete method={() => deleteMethod(module)} />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -5,10 +5,11 @@ import ModulesTable from '../components/ModulesTable/ModulesTable';
 import Header from '../components/Layout/Header';
 import Title from '../components/Layout/Title';
 import { Module, Constraint, ModuleInput, ConstraintInput, IndexProps } from '../types/modules.types';
-import { getBackgroundOffset } from '../libs/utilities';
+import { getBackgroundOffset, sendModules } from '../libs/utilities';
+import ModuleDisplay from "../components/ModuleDisplay/ModuleDisplay";
 
 export const getStaticProps = async () => {
-  const req = await fetch('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/');
+  const req = await fetch('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/data');
   const res = await req.json();
 
   const modulesRes = res.modules;
@@ -32,6 +33,7 @@ export const getStaticProps = async () => {
         firepower: module.firewpower,
         energy: module.energy,
         offset: getBackgroundOffset(),
+        amount: 0,
       }
     ));
 
@@ -63,6 +65,7 @@ const useStyles = createStyles((theme) => ({
     backgroundRepeat: 'no-repeat',
     minHeight: '100vh',
     boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px;',
+    amount: 0,
   },
   container: {
     backgroundColor: theme.colorScheme === 'dark' ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)',
@@ -75,7 +78,6 @@ const useStyles = createStyles((theme) => ({
 
 export default function HomePage({ modules, constraints }: IndexProps) {
   const { classes } = useStyles();
-  console.log('modules to type !', modules, constraints);
 
   const [moduleList, setModuleList] = useState<any>(modules);
   const [constraintList, setConstraintList] = useState<any>(constraints);
@@ -83,13 +85,13 @@ export default function HomePage({ modules, constraints }: IndexProps) {
   const [constraintsValue, setConstraintsValue] = useState<any>();
   const [selectedModules, setSelectedModules] = useState<any[]>([]);
   const [selectedConstraints, setSelectedConstraints] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<any>(false);
 
   const handleSelect = (newValue: string, type: string) => {
     if (type === 'm') {
       const returnValueObject = moduleList.find((mod: Module) => mod.value === newValue);
       setSelectedModules(selectedModules => [...selectedModules, returnValueObject]);
       setModuleList(moduleList.filter((module: Module) => module.value !== newValue));
-      console.log(selectedModules);
       return;
     }
     const returnValueObject = constraintList.find((mod: Constraint) => mod.value === newValue);
@@ -97,9 +99,25 @@ export default function HomePage({ modules, constraints }: IndexProps) {
     setConstraintList(constraintList.filter((module: Module) => module.value !== newValue));
   };
 
-  const handleSubmit = () => {
+  const sendData = {
+    modules: { 'air_la29': 3, 'gun_ak100':1 }
+,
+    constraints: { twr: { min: 10, max: 35 } },
+  };
+
+  console.log('send data', sendData);
+  const handleSubmit = async () => {
+    console.log('sending data...');
+    const sendTime = (new Date()).getTime();
+    setIsLoading(true);
+    const data = await sendModules('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/opt', sendData);
+    setIsLoading(false);
+    const receivedTime = (new Date()).getTime();
+    const delay = receivedTime - sendTime;
+    console.log(`Response received in ${delay} ms !`);
     console.log(selectedModules);
     console.log(selectedConstraints);
+    console.log(data);
   };
 
   const handleDelete = (module: Module, type: string): void => {
@@ -138,16 +156,16 @@ export default function HomePage({ modules, constraints }: IndexProps) {
             handleSelect={handleSelect}
             type="m"
           />
-          <ModulesTable modules={selectedModules} deleteMethod={handleDelete} type="m" />
-          <Title type="c">Constraints</Title>
-          <SelectModule
-            modules={constraintList}
-            value={constraintsValue}
-            handleSelect={handleSelect}
-            type="c"
-          />
-          <ModulesTable modules={selectedConstraints} deleteMethod={handleDelete} type="c" />
-          <Button onClick={handleSubmit}>Log request</Button>
+          <ModulesTable modules={selectedModules} selectedModules={selectedModules} setSelectedModules={setSelectedModules} deleteMethod={handleDelete} />
+          {/*<Title type="c">Constraints</Title>*/}
+          {/*<SelectModule*/}
+          {/*  modules={constraintList}*/}
+          {/*  value={constraintsValue}*/}
+          {/*  handleSelect={handleSelect}*/}
+          {/*  type="c"*/}
+          {/*/>*/}
+          {/*<ModulesTable modules={selectedConstraints} deleteMethod={handleDelete} type="c" />*/}
+          <Button onClick={handleSubmit}>{isLoading ? 'Loading...' : 'Send data'}</Button>
         </Container>
       </MediaQuery>
     </main>
