@@ -1,7 +1,7 @@
 import { createStyles, NumberInput } from '@mantine/core';
 import { CreateBadges } from '../ModulesTable/CreateBadges';
 import Delete from '../ModulesTable/Delete';
-import { Module } from "../../types/modules.types";
+import { Module } from '../../types/modules.types';
 
 const useStyles = createStyles((theme) => ({
   additionalInfos: {
@@ -123,7 +123,6 @@ export default function ModuleDisplay({ module,
   };
 
   // @ts-ignore
-  // @ts-ignore
   return (
     <div className={classes.moduleContainer}>
       <div className={classes.moduleContainer}>
@@ -140,6 +139,7 @@ export default function ModuleDisplay({ module,
               {module.label}
             </div>
             <div className={classes.badgeContainer}>
+              {/* @ts-ignore */}
               <CreateBadges module={module} />
             </div>
             <div className={classes.numberDisplay}><NumberInput

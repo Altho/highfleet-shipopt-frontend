@@ -1,10 +1,6 @@
-import { createStyles, Select } from "@mantine/core";
-import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
-import { createContext, useContext, useState } from "react";
-import ModulesTable from "../ModulesTable/ModulesTable";
-import { IconCirclePlus } from "@tabler/icons";
-import { ModuleListTypes } from "../../types/moduleList.types";
-
+import { createStyles, Select } from '@mantine/core';
+import { IconCirclePlus } from '@tabler/icons';
+import { Module } from '../../types/modules.types';
 
 const useStyles = createStyles((theme) => ({
   input: {
@@ -30,7 +26,7 @@ const useStyles = createStyles((theme) => ({
   },
   dropdown: {
     width: '200px',
-    boxShadow: `rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px`,
+    boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px',
     border: `3px solid ${theme.colorScheme === 'dark' ? '#ff7f2aff' : 'lightgray'}`,
   },
   placeholder: {
@@ -42,7 +38,7 @@ const useStyles = createStyles((theme) => ({
 
     '&:hover': {
       backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'lightgray',
-      color : 'black',
+      color: 'black',
     },
   },
   rightSection: {
@@ -58,16 +54,16 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
+type Props = {
+  modules: Module[],
+  value: string,
+  handleSelect: Function,
+  type: string,
+};
 
-
-
-export default function SelectModule({ modules, value, handleSelect, type }) {
-
-
-
+export default function SelectModule({ modules, value, handleSelect, type }: Props) {
   const { classes } = useStyles();
   const returnType = () => type === 'c' ? 'c' : 'm';
-
 
   return (
     <>
@@ -83,10 +79,11 @@ export default function SelectModule({ modules, value, handleSelect, type }) {
       }}
         disabled={!modules.length}
         searchable
-        placeholder={'please select'}
+        placeholder="please select"
         value={value}
         required
         label={type === 'm' ? 'Select a module' : 'Select a constraint'}
+        /* eslint-disable-next-line @typescript-eslint/no-shadow */
         onChange={(value) => handleSelect(value, returnType())}
         icon={<IconCirclePlus />}
         data={modules}
