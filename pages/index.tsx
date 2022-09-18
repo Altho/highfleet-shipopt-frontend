@@ -82,6 +82,7 @@ export default function HomePage({ modules, constraints }: IndexProps) {
 
   const [moduleList, setModuleList] = useState<any>(modules);
   const [constraintList, setConstraintList] = useState<any>(constraints);
+  const [returnedModules, setReturnedModules] = useState<any>([]);
   const [modulesValue, setModulesValue] = useState<any>();
   const [constraintsValue, setConstraintsValue] = useState<any>();
   const [selectedModules, setSelectedModules] = useState<any[]>([]);
@@ -128,9 +129,30 @@ export default function HomePage({ modules, constraints }: IndexProps) {
     const receivedTime = (new Date()).getTime();
     const delay = receivedTime - sendTime;
     console.log(`Response received in ${delay} ms !`);
-    console.log(data);
+    console.log(data.modules);
+    const receivedModules = data.modules;
+    // const filteredModules = receivedModules.filter((module: any) => module > 0);
+    console.log('filtered', receivedModules);
+    const moduleArray: Module[] = [];
+    Object.entries(receivedModules).forEach(([key, amount]) => {
+      // @ts-ignore
+      if (amount > 0) {
+        // @ts-ignore
+        moduleArray.push({ name: key, value: amount });
+        const returnValueObject = modules.find((mod: any) => mod.value === key);
+        if (returnValueObject) {
+          if (typeof amount === 'number') {
+            returnValueObject.amount = amount;
+          }
+        }
+        // eslint-disable-next-line @typescript-eslint/no-shadow
+        setSelectedModules(selectedModules => [...selectedModules, returnValueObject]);
+      }
+    });
+    setReturnedModules(moduleArray);
+    // const mapped = receivedModules.map((module: any) => (module));
+    // console.log(mapped);
   };
-
   const handleDelete = (module: Module, type: string): void => {
     if (type === 'm') {
       const selectedObject = modules.find((mod) => mod.value === module.value);
@@ -179,6 +201,7 @@ export default function HomePage({ modules, constraints }: IndexProps) {
           />
           <ModulesTable modules={selectedConstraints} selectedModules={selectedConstraints} setSelectedModules={setSelectedConstraints} deleteMethod={handleDelete} type="c" />
           <Button onClick={handleSubmit}>{isLoading ? 'Loading...' : 'Send data'}</Button>
+          <div>{returnedModules.map((mod: { name: any; }) => mod.name)}</div>
         </Container>
       </MediaQuery>
     </main>

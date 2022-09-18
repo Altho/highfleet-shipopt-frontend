@@ -142,7 +142,7 @@ export default function ModuleDisplay({ module,
             <div className={classes.numberDisplay}><NumberInput
               classNames={{ input: classes.numberInput }}
               defaultValue={1}
-              // value={50}
+              value={module.amount}
               onChange={(e) => handleChange(e, module.value)}
               min={1}
               max={99}
