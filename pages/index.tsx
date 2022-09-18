@@ -6,7 +6,6 @@ import Header from '../components/Layout/Header';
 import Title from '../components/Layout/Title';
 import { Module, Constraint, ModuleInput, ConstraintInput, IndexProps } from '../types/modules.types';
 import { getBackgroundOffset, sendModules } from '../libs/utilities';
-import ModuleDisplay from '../components/ModuleDisplay/ModuleDisplay';
 
 export const getStaticProps = async () => {
   const req = await fetch('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/data');
@@ -45,6 +44,7 @@ export const getStaticProps = async () => {
         min: constraint.min,
         max: constraint.max,
         units: constraint.units,
+        offset: getBackgroundOffset(),
         range: [20, 80],
       }
     ));
@@ -91,16 +91,16 @@ export default function HomePage({ modules, constraints }: IndexProps) {
   const handleSelect = (newValue: string, type: string) => {
     if (type === 'm') {
       const returnValueObject = moduleList.find((mod: Module) => mod.value === newValue);
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       setSelectedModules(selectedModules => [...selectedModules, returnValueObject]);
       setModuleList(moduleList.filter((module: Module) => module.value !== newValue));
       return;
     }
     const returnValueObject = constraintList.find((mod: Constraint) => mod.value === newValue);
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     setSelectedConstraints(selectedConstraints => [...selectedConstraints, returnValueObject]);
     setConstraintList(constraintList.filter((module: Module) => module.value !== newValue));
   };
-
-
 
   const handleSubmit = async () => {
     const modulesToSend = selectedModules.reduce((acc, { value, amount }) => {
@@ -137,6 +137,7 @@ export default function HomePage({ modules, constraints }: IndexProps) {
       if (selectedObject) {
         setSelectedModules(prevState => prevState.filter(
           elem => elem.value !== selectedObject.value));
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         setModuleList((moduleList: Module[]) => [selectedObject, ...moduleList]);
         // setModuleList(moduleList.sort());
         setModulesValue(null);
@@ -147,6 +148,7 @@ export default function HomePage({ modules, constraints }: IndexProps) {
     if (selectedConstraint) {
       setSelectedConstraints(prevState => prevState.filter(
         elem => elem.value !== selectedConstraint.value));
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       setConstraintList((constraintList: Constraint[]) => [selectedConstraint, ...constraintList]);
       setConstraintsValue(null);
     }
