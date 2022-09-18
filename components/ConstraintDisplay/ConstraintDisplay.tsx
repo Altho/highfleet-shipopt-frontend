@@ -1,7 +1,8 @@
-import { createStyles, NumberInput, RangeSlider } from '@mantine/core';
+import { createStyles, NumberInput, RangeSlider, Image } from '@mantine/core';
 import { Module } from '../../types/modules.types';
 import { CreateBadges } from '../ModulesTable/CreateBadges';
 import Delete from '../ModulesTable/Delete';
+import { useState } from "react";
 
 const useStyles = createStyles((theme) => ({
   additionalInfos: {
@@ -94,19 +95,30 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function ModuleDisplay({ module, selectedModules, setSelectedModules, deleteMethod }) {
+export default function ConstraintDisplay({ constraint, selectedConstraint, setSelectedConstraint, deleteMethod }) {
   const { classes } = useStyles();
 
-  const handleChange = (e, id) => {
-    const modules = [...selectedModules];
-    console.log('modules', modules, 'id', id);
-    const updatedValue = modules.find(
+  const [rangeValue, setRangeValue] = useState<[number, number]>([20, 80]);
+
+
+  const handleChange = (rangeValue, id) => {
+    setRangeValue(rangeValue);
+    const constraints = [...selectedConstraint];
+    const updatedValue = constraints.find(
       a => a.value === id
     );
-    console.log('update value', updatedValue)
-    updatedValue.amount = e;
-    setSelectedModules(modules);
-    console.log(updatedValue, selectedModules);
+    updatedValue.range = rangeValue;
+    setSelectedConstraint(constraints);
+  };
+
+  const SliderImage = ({ path }: any) => {
+    const { classes } = useStyles();
+    return (
+      <Image
+        style={{ pointerEvents: 'none', filter: 'drop-shadow(4px 4px 5px black)' }}
+        src={`../${path}.svg`}
+      />
+    );
   };
 
   return (
@@ -114,32 +126,33 @@ export default function ModuleDisplay({ module, selectedModules, setSelectedModu
       <div className={classes.moduleContainer}>
         <div className={classes.ribbon} />
         <div
-          key={module.value}
+          key={constraint.value}
           className={classes.module}
-          style={{ backgroundPosition: module.offset }}
+          style={{ backgroundPosition: constraint.offset }}
         >
           <div
             className={classes.mainInfos}
           >
             <div className={classes.nameDisplay}>
-              {module.label}
+              {constraint.label}
             </div>
-            <div className={classes.badgeContainer}>
-              <CreateBadges module={module} />
-            </div>
-            <div className={classes.numberDisplay}><NumberInput
-              classNames={{ input: classes.numberInput }}
-              defaultValue={1}
-              // value={50}
-              onChange={(e) => handleChange(e, module.value)}
-              min={1}
-              max={99}
-              stepHoldDelay={500}
-              stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
+            <div><RangeSlider
+              thumbSize={40}
+              label={value => `${value} ${constraint.units}`}
+              min={constraint.min}
+              max={constraint.max}
+              value={rangeValue}
+              onChange={(rangeValue) => handleChange(rangeValue, constraint.value)}
+              thumbChildren={<SliderImage path={constraint.value} />, <SliderImage path={constraint.value} />}
+              classNames={{
+                root: classes.sliderRoot,
+                bar: classes.bar,
+                thumb: classes.thumb,
+              }}
             />
-            </div>
+            </div>}
             <div className={classes.deleteCell}>
-              <Delete method={() => deleteMethod(module, 'm')} />
+              <Delete method={() => deleteMethod(constraint, 'c')} />
             </div>
           </div>
         </div>

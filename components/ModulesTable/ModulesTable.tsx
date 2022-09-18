@@ -4,6 +4,7 @@ import Delete from './Delete';
 import { CreateBadges } from './CreateBadges';
 import { Constraint, Module } from '../../types/modules.types';
 import ModuleDisplay from "../ModuleDisplay/ModuleDisplay";
+import ConstraintDisplay from "../ConstraintDisplay/ConstraintDisplay";
 
 const useStyles = createStyles((theme) => ({
   additionalInfos: {
@@ -101,31 +102,31 @@ type Props = {
   deleteMethod: Function,
   selectedModules: any,
   setSelectedModules: any,
+  type: string
 };
 
-export default function ModulesTable({ modules, deleteMethod, selectedModules, setSelectedModules }: Props) {
+export default function ModulesTable({ modules, deleteMethod, selectedModules, setSelectedModules, type }: Props) {
   const { classes } = useStyles();
-  const [isHovering, setIsHovering] = useState<any>();
 
-  const handleMouseOver = (value: string) => {
-    isHovering === value ? setIsHovering(null) : setIsHovering(value);
-  };
-
-  const generateModules = () => {
-    modules.map((module) => (
-      <ModuleDisplay
-        module={module}
-        selectedModules={selectedModules}
-        setSelectedModules={setSelectedModules}
-        deleteMethod={deleteMethod}
-      />
-    ));
-  };
 
   return (
     <div className={classes.moduleContainer}>
       {modules.map((mod) => (
-        <ModuleDisplay module={mod} selectedModules={selectedModules} setSelectedModules={setSelectedModules} deleteMethod={deleteMethod}/>
+        type === 'm' ? (
+        <ModuleDisplay
+          module={mod}
+          selectedModules={selectedModules}
+          setSelectedModules={setSelectedModules}
+          deleteMethod={deleteMethod}
+        />)
+          :
+          (
+          <ConstraintDisplay
+            constraint={mod}
+            selectedConstraint={selectedModules}
+            setSelectedConstraint={setSelectedModules}
+            deleteMethod={deleteMethod}
+          />)
       ))}
     </div>
   );

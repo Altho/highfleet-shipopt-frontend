@@ -53,6 +53,8 @@ export interface Constraint {
   min: number,
   max: number,
   units: string,
+  range: number[]
+
 }
 
 export type IndexProps = {
