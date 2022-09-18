@@ -1,10 +1,7 @@
-import { createStyles, Image, NumberInput, RangeSlider, Group } from '@mantine/core';
-import { useState } from 'react';
-import Delete from './Delete';
-import { CreateBadges } from './CreateBadges';
-import { Constraint, Module } from '../../types/modules.types';
-import ModuleDisplay from "../ModuleDisplay/ModuleDisplay";
-import ConstraintDisplay from "../ConstraintDisplay/ConstraintDisplay";
+import { createStyles } from '@mantine/core';
+import { Module } from '../../types/modules.types';
+import ModuleDisplay from '../ModuleDisplay/ModuleDisplay';
+import ConstraintDisplay from '../ConstraintDisplay/ConstraintDisplay';
 
 const useStyles = createStyles((theme) => ({
   additionalInfos: {
@@ -105,10 +102,14 @@ type Props = {
   type: string
 };
 
-export default function ModulesTable({ modules, deleteMethod, selectedModules, setSelectedModules, type }: Props) {
+export default function ModulesTable({ modules,
+                                       deleteMethod,
+                                       selectedModules,
+                                       setSelectedModules,
+                                       type }: Props) {
   const { classes } = useStyles();
 
-
+  // @ts-ignore
   return (
     <div className={classes.moduleContainer}>
       {modules.map((mod) => (
@@ -122,6 +123,7 @@ export default function ModulesTable({ modules, deleteMethod, selectedModules, s
           :
           (
           <ConstraintDisplay
+            /* @ts-ignore */
             constraint={mod}
             selectedConstraint={selectedModules}
             setSelectedConstraint={setSelectedModules}
