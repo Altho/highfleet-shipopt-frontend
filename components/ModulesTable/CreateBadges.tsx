@@ -60,7 +60,6 @@ export const CreateBadges = ({ module }) => {
   Object.keys(module).forEach((key) => {
     objectArray.push({ id: key, value: module[key] });
   });
-  console.log('moduleObject attemp', objectArray);
 
   return (
     // eslint-disable-next-line array-callback-return,consistent-return

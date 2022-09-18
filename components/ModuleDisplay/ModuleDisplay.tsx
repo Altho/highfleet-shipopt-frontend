@@ -109,17 +109,14 @@ export default function ModuleDisplay({ module,
 
   const handleChange = (e: number | undefined, id: string) => {
     const modules = [...selectedModules];
-    console.log('modules', modules, 'id', id);
     const updatedValue = modules.find(
       a => a.value === id
     );
-    console.log('update value', updatedValue);
     if (e != null) {
       // @ts-ignore
       updatedValue.amount = e;
     }
     setSelectedModules(modules);
-    console.log(updatedValue, selectedModules);
   };
 
   // @ts-ignore

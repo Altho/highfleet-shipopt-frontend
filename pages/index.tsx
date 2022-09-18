@@ -32,7 +32,7 @@ export const getStaticProps = async () => {
         firepower: module.firewpower,
         energy: module.energy,
         offset: getBackgroundOffset(),
-        amount: 0,
+        amount: 1,
       }
     ));
 
