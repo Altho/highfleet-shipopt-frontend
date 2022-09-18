@@ -53,6 +53,7 @@ export interface Constraint {
   min: number,
   max: number,
   units: string,
+  offset: string,
   range: number[]
 
 }

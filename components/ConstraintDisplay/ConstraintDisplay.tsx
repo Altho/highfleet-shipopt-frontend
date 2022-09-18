@@ -1,8 +1,7 @@
-import { createStyles, NumberInput, RangeSlider, Image } from '@mantine/core';
-import { Module } from '../../types/modules.types';
-import { CreateBadges } from '../ModulesTable/CreateBadges';
+import { createStyles, RangeSlider, Image } from '@mantine/core';
+import { SetStateAction, useState } from 'react';
+import { Constraint } from '../../types/modules.types';
 import Delete from '../ModulesTable/Delete';
-import { useState } from "react";
 
 const useStyles = createStyles((theme) => ({
   additionalInfos: {
@@ -95,32 +94,46 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function ConstraintDisplay({ constraint, selectedConstraint, setSelectedConstraint, deleteMethod }) {
+type Props = {
+  constraint: Constraint
+  selectedConstraint: Constraint[]
+  setSelectedConstraint: Function
+  deleteMethod: Function
+};
+
+export default function ConstraintDisplay({
+                                            constraint,
+                                            selectedConstraint,
+                                            setSelectedConstraint,
+                                            deleteMethod,
+                                          }: Props) {
   const { classes } = useStyles();
 
   const [rangeValue, setRangeValue] = useState<[number, number]>([20, 80]);
 
-
-  const handleChange = (rangeValue, id) => {
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  const handleChange = (rangeValue: SetStateAction<[number, number]>, id: string) => {
     setRangeValue(rangeValue);
     const constraints = [...selectedConstraint];
     const updatedValue = constraints.find(
       a => a.value === id
     );
-    updatedValue.range = rangeValue;
-    setSelectedConstraint(constraints);
+    if (updatedValue) {
+      // @ts-ignore
+      updatedValue.range = rangeValue;
+      setSelectedConstraint(constraints);
+    }
   };
 
-  const SliderImage = ({ path }: any) => {
-    const { classes } = useStyles();
-    return (
+  const SliderImage = ({ path }: any) => (
       <Image
         style={{ pointerEvents: 'none', filter: 'drop-shadow(4px 4px 5px black)' }}
         src={`../${path}.svg`}
       />
     );
-  };
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <div className={classes.moduleContainer}>
       <div className={classes.moduleContainer}>
@@ -142,15 +155,16 @@ export default function ConstraintDisplay({ constraint, selectedConstraint, setS
               min={constraint.min}
               max={constraint.max}
               value={rangeValue}
+              /* eslint-disable-next-line @typescript-eslint/no-shadow */
               onChange={(rangeValue) => handleChange(rangeValue, constraint.value)}
-              thumbChildren={<SliderImage path={constraint.value} />, <SliderImage path={constraint.value} />}
+              thumbChildren={<SliderImage path={constraint.value} />}
               classNames={{
                 root: classes.sliderRoot,
                 bar: classes.bar,
                 thumb: classes.thumb,
               }}
             />
-            </div>}
+            </div>
             <div className={classes.deleteCell}>
               <Delete method={() => deleteMethod(constraint, 'c')} />
             </div>
