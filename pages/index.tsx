@@ -6,7 +6,7 @@ import Header from '../components/Layout/Header';
 import Title from '../components/Layout/Title';
 import { Module, Constraint, ModuleInput, ConstraintInput, IndexProps } from '../types/modules.types';
 import { getBackgroundOffset, sendModules } from '../libs/utilities';
-import ModuleDisplay from "../components/ModuleDisplay/ModuleDisplay";
+import ModuleDisplay from '../components/ModuleDisplay/ModuleDisplay';
 
 export const getStaticProps = async () => {
   const req = await fetch('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/data');
@@ -100,30 +100,35 @@ export default function HomePage({ modules, constraints }: IndexProps) {
     setConstraintList(constraintList.filter((module: Module) => module.value !== newValue));
   };
 
-  const sendData = {
-    modules: { 'air_la29': 3, 'gun_ak100':1 }
-,
-    constraints: { twr: { min: 10, max: 35 } },
-  };
 
-  console.log('send data', sendData);
+
   const handleSubmit = async () => {
-    // const modulesToSend = selectedModules.reduce((acc, elem) => {
-    //   return { acc[elem.value] : elem.amount}
-    // })
+    const modulesToSend = selectedModules.reduce((acc, { value, amount }) => {
+      acc[value] = amount;
+      return acc;
+    }, {});
+
+    const constraintsToSend = selectedConstraints.reduce((acc, { value, range }) => {
+      acc[value] = { min: range[0], max: range[1] };
+      return acc;
+    }, {});
+
+    const sendData = {
+      modules: modulesToSend,
+      constraints: constraintsToSend,
+    };
     // const constraintsToSend = selectedConstraints.map((mod) => {
     //   mod.value: {min: mod.range[0], max: mod.range[1]}
     // })
     // console.log('sending data...');
-    // const sendTime = (new Date()).getTime();
-    // setIsLoading(true);
-    // const data = await sendModules('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/opt', sendData);
-    // setIsLoading(false);
-    // const receivedTime = (new Date()).getTime();
-    // const delay = receivedTime - sendTime;
-    // console.log(`Response received in ${delay} ms !`);
-    console.log(selectedConstraints, selectedModules);
-    // console.log(data);
+    const sendTime = (new Date()).getTime();
+    setIsLoading(true);
+    const data = await sendModules('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/opt', sendData);
+    setIsLoading(false);
+    const receivedTime = (new Date()).getTime();
+    const delay = receivedTime - sendTime;
+    console.log(`Response received in ${delay} ms !`);
+    console.log(data);
   };
 
   const handleDelete = (module: Module, type: string): void => {
