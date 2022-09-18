@@ -7,24 +7,20 @@ import {
   IconEngine,
   IconEye,
   IconBarrel,
-  IconGasStation,
   IconActivity,
-  IconArrowTopTail,
   IconSquare,
   IconBarbell,
-  IconUsers,
   IconGauge,
   IconRuler2,
   IconRocket,
   IconStar,
   IconBolt,
-  IconTower, IconFriends
+  IconTower, IconFriends,
 
+} from '@tabler/icons';
+import { Badge, createStyles, Tooltip } from '@mantine/core';
 
-} from "@tabler/icons";
-import { Badge, createStyles, Tooltip } from "@mantine/core";
-
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   badgeType: {
     // backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'black',
     // color: theme.colorScheme === 'dark' ? 'black' : 'white',
@@ -33,56 +29,58 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const getIcon = (group) => {
+// eslint-disable-next-line consistent-return
+const getIcon = (group: any) => {
   switch (group) {
-    case "Offense":
+    case 'Offense':
       return <IconSword />;
       break;
-    case "Ship":
+    case 'Ship':
       return <IconUfo />;
       break;
-    case "Defense":
+    case 'Defense':
       return <IconShieldHalfFilled />;
       break;
-    case "Safety":
+    case 'Safety':
       return <IconParachute />;
       break;
-    case "Engines":
+    case 'Engines':
       return <IconEngine />;
       break;
-    case "Sensors":
+    case 'Sensors':
       return <IconEye />;
       break;
   }
 };
 
+// @ts-ignore
 export const CreateBadges = ({ module }) => {
   const { classes } = useStyles();
-  const objectArray = [];
-  Object.keys(module).forEach((key, index) => {
+  const objectArray: { id: string; value: any; }[] = [];
+  Object.keys(module).forEach((key) => {
     objectArray.push({ id: key, value: module[key] });
   });
   console.log('moduleObject attemp', objectArray);
 
   return (
+    // eslint-disable-next-line array-callback-return,consistent-return
     objectArray.map((mod) => {
       if (mod.id === 'group' && mod.id) {
         const Icon = getIcon(mod.value);
         return (
           <Tooltip label="Type">
           <Badge
-          className={classes.badgeType}
-          variant="filled"
-          size="lg"
-          leftSection={Icon}
-          radius="sm"
-        >
+            className={classes.badgeType}
+            variant="filled"
+            size="lg"
+            leftSection={Icon}
+            radius="sm"
+          >
           {mod.value}
-               </Badge>
+          </Badge>
           </Tooltip>
       );
       }
-
       if (mod.id === 'cost' && mod.value > 0) {
           return (
             <Tooltip label="Cost">
@@ -99,7 +97,6 @@ export const CreateBadges = ({ module }) => {
             </Tooltip>
           );
         }
-
       if (mod.id === 'fuel_cap' && mod.value > 0) {
         return (
           <Tooltip label="Fuel Cap">
@@ -116,7 +113,6 @@ export const CreateBadges = ({ module }) => {
           </Tooltip>
         );
       }
-
       if (mod.id === 'hp' && mod.value > 0) {
         return (
           <Tooltip label="hp">
@@ -133,7 +129,6 @@ export const CreateBadges = ({ module }) => {
           </Tooltip>
         );
       }
-
       if (mod.id === 'squares' && mod.value > 0) {
         return (
           <Tooltip label="Squares">
@@ -150,7 +145,6 @@ export const CreateBadges = ({ module }) => {
           </Tooltip>
         );
       }
-
       if (mod.id === 'weight' && mod.value > 0) {
         return (
           <Tooltip label="Weight">
@@ -167,7 +161,6 @@ export const CreateBadges = ({ module }) => {
           </Tooltip>
         );
       }
-
       if (mod.id === 'crew' && mod.value > 0) {
         return (
           <Tooltip label="Crew">
@@ -184,7 +177,6 @@ export const CreateBadges = ({ module }) => {
           </Tooltip>
         );
       }
-
       if (mod.id === 'fuel_rate' && mod.value > 0) {
         return (
           <Tooltip label="Fuel rate">
@@ -201,7 +193,6 @@ export const CreateBadges = ({ module }) => {
           </Tooltip>
         );
       }
-
       if (mod.id === 'width' && mod.value > 0) {
         return (
           <Tooltip label="Width">
@@ -218,7 +209,6 @@ export const CreateBadges = ({ module }) => {
           </Tooltip>
         );
       }
-
       if (mod.id === 'thrust' && mod.value > 0) {
         return (
           <Tooltip label="Thrust">
@@ -235,7 +225,6 @@ export const CreateBadges = ({ module }) => {
           </Tooltip>
         );
       }
-
       if (mod.id === 'firepower' && mod.value > 0) {
         return (
           <Tooltip label="Firepower">
@@ -252,7 +241,6 @@ export const CreateBadges = ({ module }) => {
           </Tooltip>
         );
       }
-
       if (mod.id === 'energy' && mod.value > 0) {
         return (
           <Tooltip label="Energy">
@@ -269,7 +257,6 @@ export const CreateBadges = ({ module }) => {
           </Tooltip>
         );
       }
-
       if (mod.id === 'height' && mod.value > 0) {
         return (
           <Tooltip label="Height">
@@ -287,8 +274,5 @@ export const CreateBadges = ({ module }) => {
         );
       }
     }));
+  return null;
 };
-
-// moduleObject().map((mod) => {
-//   console.log(mod);
-// });

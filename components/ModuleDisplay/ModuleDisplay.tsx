@@ -1,7 +1,7 @@
-import { createStyles, NumberInput, RangeSlider } from '@mantine/core';
-import { Module } from '../../types/modules.types';
+import { createStyles, NumberInput } from '@mantine/core';
 import { CreateBadges } from '../ModulesTable/CreateBadges';
 import Delete from '../ModulesTable/Delete';
+import { Module } from "../../types/modules.types";
 
 const useStyles = createStyles((theme) => ({
   additionalInfos: {
@@ -94,21 +94,36 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function ModuleDisplay({ module, selectedModules, setSelectedModules, deleteMethod }) {
+type Props = {
+  module: Module,
+  selectedModules: Module[],
+  setSelectedModules: Function,
+  deleteMethod: Function,
+};
+
+export default function ModuleDisplay({ module,
+                                        selectedModules,
+                                        setSelectedModules,
+                                        deleteMethod }: Props) {
   const { classes } = useStyles();
 
-  const handleChange = (e, id) => {
+  const handleChange = (e: number | undefined, id: string) => {
     const modules = [...selectedModules];
     console.log('modules', modules, 'id', id);
     const updatedValue = modules.find(
       a => a.value === id
     );
-    console.log('update value', updatedValue)
-    updatedValue.amount = e;
+    console.log('update value', updatedValue);
+    if (e != null) {
+      // @ts-ignore
+      updatedValue.amount = e;
+    }
     setSelectedModules(modules);
     console.log(updatedValue, selectedModules);
   };
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <div className={classes.moduleContainer}>
       <div className={classes.moduleContainer}>
