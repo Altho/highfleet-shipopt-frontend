@@ -45,6 +45,7 @@ export const getStaticProps = async () => {
         min: constraint.min,
         max: constraint.max,
         units: constraint.units,
+        range: [20, 80],
       }
     ));
 
@@ -107,17 +108,22 @@ export default function HomePage({ modules, constraints }: IndexProps) {
 
   console.log('send data', sendData);
   const handleSubmit = async () => {
-    console.log('sending data...');
-    const sendTime = (new Date()).getTime();
-    setIsLoading(true);
-    const data = await sendModules('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/opt', sendData);
-    setIsLoading(false);
-    const receivedTime = (new Date()).getTime();
-    const delay = receivedTime - sendTime;
-    console.log(`Response received in ${delay} ms !`);
-    console.log(selectedModules);
-    console.log(selectedConstraints);
-    console.log(data);
+    // const modulesToSend = selectedModules.reduce((acc, elem) => {
+    //   return { acc[elem.value] : elem.amount}
+    // })
+    // const constraintsToSend = selectedConstraints.map((mod) => {
+    //   mod.value: {min: mod.range[0], max: mod.range[1]}
+    // })
+    // console.log('sending data...');
+    // const sendTime = (new Date()).getTime();
+    // setIsLoading(true);
+    // const data = await sendModules('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/opt', sendData);
+    // setIsLoading(false);
+    // const receivedTime = (new Date()).getTime();
+    // const delay = receivedTime - sendTime;
+    // console.log(`Response received in ${delay} ms !`);
+    console.log(selectedConstraints, selectedModules);
+    // console.log(data);
   };
 
   const handleDelete = (module: Module, type: string): void => {
@@ -156,15 +162,15 @@ export default function HomePage({ modules, constraints }: IndexProps) {
             handleSelect={handleSelect}
             type="m"
           />
-          <ModulesTable modules={selectedModules} selectedModules={selectedModules} setSelectedModules={setSelectedModules} deleteMethod={handleDelete} />
-          {/*<Title type="c">Constraints</Title>*/}
-          {/*<SelectModule*/}
-          {/*  modules={constraintList}*/}
-          {/*  value={constraintsValue}*/}
-          {/*  handleSelect={handleSelect}*/}
-          {/*  type="c"*/}
-          {/*/>*/}
-          {/*<ModulesTable modules={selectedConstraints} deleteMethod={handleDelete} type="c" />*/}
+          <ModulesTable modules={selectedModules} selectedModules={selectedModules} setSelectedModules={setSelectedModules} deleteMethod={handleDelete} type="m" />
+          <Title type="c">Constraints</Title>
+          <SelectModule
+            modules={constraintList}
+            value={constraintsValue}
+            handleSelect={handleSelect}
+            type="c"
+          />
+          <ModulesTable modules={selectedConstraints} selectedModules={selectedConstraints} setSelectedModules={setSelectedConstraints} deleteMethod={handleDelete} type="c" />
           <Button onClick={handleSubmit}>{isLoading ? 'Loading...' : 'Send data'}</Button>
         </Container>
       </MediaQuery>
