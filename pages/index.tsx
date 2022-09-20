@@ -1,4 +1,4 @@
-import { Container, createStyles, MediaQuery, Button } from '@mantine/core';
+import { Container, createStyles, MediaQuery, Button, LoadingOverlay } from "@mantine/core";
 import { useState } from 'react';
 import SelectModule from '../components/Select-Module/SelectModule';
 import ModulesTable from '../components/ModulesTable/ModulesTable';
@@ -6,6 +6,7 @@ import Header from '../components/Layout/Header';
 import Title from '../components/Layout/Title';
 import { Module, Constraint, ModuleInput, ConstraintInput, IndexProps } from '../types/modules.types';
 import { getBackgroundOffset, sendModules } from '../libs/utilities';
+import {IconCalculator, IconArrowBack} from '@tabler/icons';
 
 export const getStaticProps = async () => {
   const req = await fetch('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/data');
@@ -75,6 +76,14 @@ const useStyles = createStyles((theme) => ({
     paddingTop: '10px',
     paddingBottom: '50px',
   },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    fontFamily: 'Changa, sans serif',
+  },
 }));
 
 export default function HomePage({ modules, constraints }: IndexProps) {
@@ -88,6 +97,8 @@ export default function HomePage({ modules, constraints }: IndexProps) {
   const [selectedModules, setSelectedModules] = useState<any[]>([]);
   const [selectedConstraints, setSelectedConstraints] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<any>(false);
+  const [visible, setVisible] = useState<any>(false);
+  const [gotResults, setGotResults] = useState<any>(false);
 
   const handleSelect = (newValue: string, type: string) => {
     if (type === 'm') {
@@ -123,9 +134,11 @@ export default function HomePage({ modules, constraints }: IndexProps) {
     // })
     // console.log('sending data...');
     const sendTime = (new Date()).getTime();
+    setVisible(true);
     setIsLoading(true);
     const data = await sendModules('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/opt', sendData);
     setIsLoading(false);
+    setVisible(false);
     const receivedTime = (new Date()).getTime();
     const delay = receivedTime - sendTime;
     console.log(`Response received in ${delay} ms !`);
@@ -150,8 +163,17 @@ export default function HomePage({ modules, constraints }: IndexProps) {
       }
     });
     setReturnedModules(moduleArray);
+    setGotResults(true);
     // const mapped = receivedModules.map((module: any) => (module));
     // console.log(mapped);
+  };
+  const handleReset = () => {
+    setSelectedModules([]);
+    setSelectedConstraints([]);
+    setModuleList(modules);
+    setConstraintList(constraints);
+    setReturnedModules([]);
+    setGotResults(false);
   };
   const handleDelete = (module: Module, type: string): void => {
     if (type === 'm') {
@@ -176,6 +198,32 @@ export default function HomePage({ modules, constraints }: IndexProps) {
     }
   };
 
+  const SendButton = () => {
+    return (
+      <Button
+        leftIcon={<IconCalculator />}
+        color="orange"
+        className={classes.button}
+        onClick={handleSubmit}
+      >
+        {isLoading ? 'Calculating...' : 'Calculate'}
+      </Button>
+    );
+  };
+
+  const ResetButton = () => {
+    return (
+      <Button
+        leftIcon={<IconArrowBack />}
+        color="red"
+        className={classes.button}
+        onClick={handleReset}
+      >
+        Reset
+      </Button>
+    );
+  };
+
   return (
     <main className={classes.mainDiv}>
       <Header />
@@ -184,6 +232,7 @@ export default function HomePage({ modules, constraints }: IndexProps) {
         styles={{ backgroundColor: 'transparent' }}
       >
         <Container className={classes.container}>
+          <LoadingOverlay visible={visible} overlayBlur={2} />
           <Title type="m">Modules</Title>
           <SelectModule
             modules={moduleList}
@@ -200,7 +249,9 @@ export default function HomePage({ modules, constraints }: IndexProps) {
             type="c"
           />
           <ModulesTable modules={selectedConstraints} selectedModules={selectedConstraints} setSelectedModules={setSelectedConstraints} deleteMethod={handleDelete} type="c" />
-          <Button onClick={handleSubmit}>{isLoading ? 'Loading...' : 'Send data'}</Button>
+          <div className={classes.buttonContainer}>
+            {gotResults ? <ResetButton /> : <SendButton />}
+          </div>
           <div>{returnedModules.map((mod: { name: any; }) => mod.name)}</div>
         </Container>
       </MediaQuery>
