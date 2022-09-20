@@ -1,12 +1,12 @@
-import { Container, createStyles, MediaQuery, Button, LoadingOverlay } from "@mantine/core";
+import { Container, createStyles, MediaQuery, Button, LoadingOverlay } from '@mantine/core';
 import { useState } from 'react';
+import { IconCalculator, IconArrowBack } from '@tabler/icons';
 import SelectModule from '../components/Select-Module/SelectModule';
 import ModulesTable from '../components/ModulesTable/ModulesTable';
 import Header from '../components/Layout/Header';
 import Title from '../components/Layout/Title';
 import { Module, Constraint, ModuleInput, ConstraintInput, IndexProps } from '../types/modules.types';
 import { getBackgroundOffset, sendModules } from '../libs/utilities';
-import {IconCalculator, IconArrowBack} from '@tabler/icons';
 
 export const getStaticProps = async () => {
   const req = await fetch('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/data');
@@ -83,6 +83,13 @@ const useStyles = createStyles((theme) => ({
   },
   button: {
     fontFamily: 'Changa, sans serif',
+    marginTop: '20px',
+  },
+  result: {
+    textAlign: 'center',
+    fontFamily: 'Changa; sans serif',
+    fontSize: '2em',
+    color: 'red',
   },
 }));
 
@@ -91,6 +98,7 @@ export default function HomePage({ modules, constraints }: IndexProps) {
 
   const [moduleList, setModuleList] = useState<any>(modules);
   const [constraintList, setConstraintList] = useState<any>(constraints);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [returnedModules, setReturnedModules] = useState<any>([]);
   const [modulesValue, setModulesValue] = useState<any>();
   const [constraintsValue, setConstraintsValue] = useState<any>();
@@ -198,8 +206,7 @@ export default function HomePage({ modules, constraints }: IndexProps) {
     }
   };
 
-  const SendButton = () => {
-    return (
+  const SendButton = () => (
       <Button
         leftIcon={<IconCalculator />}
         color="orange"
@@ -209,10 +216,8 @@ export default function HomePage({ modules, constraints }: IndexProps) {
         {isLoading ? 'Calculating...' : 'Calculate'}
       </Button>
     );
-  };
 
-  const ResetButton = () => {
-    return (
+  const ResetButton = () => (
       <Button
         leftIcon={<IconArrowBack />}
         color="red"
@@ -222,7 +227,6 @@ export default function HomePage({ modules, constraints }: IndexProps) {
         Reset
       </Button>
     );
-  };
 
   return (
     <main className={classes.mainDiv}>
@@ -233,26 +237,41 @@ export default function HomePage({ modules, constraints }: IndexProps) {
       >
         <Container className={classes.container}>
           <LoadingOverlay visible={visible} overlayBlur={2} />
+          {gotResults && <div className={classes.result}>Here are the optimal results</div>}
           <Title type="m">Modules</Title>
-          <SelectModule
+          {!gotResults && <SelectModule
             modules={moduleList}
             value={modulesValue}
             handleSelect={handleSelect}
             type="m"
+          />}
+          <ModulesTable
+            modules={selectedModules}
+            selectedModules={selectedModules}
+            setSelectedModules={setSelectedModules}
+            deleteMethod={handleDelete}
+            type="m"
+            visible={gotResults}
           />
-          <ModulesTable modules={selectedModules} selectedModules={selectedModules} setSelectedModules={setSelectedModules} deleteMethod={handleDelete} type="m" />
-          <Title type="c">Constraints</Title>
-          <SelectModule
+          {!gotResults && <Title type="c">Constraints</Title>}
+          {!gotResults && <SelectModule
             modules={constraintList}
             value={constraintsValue}
             handleSelect={handleSelect}
             type="c"
+          />}
+          {!gotResults && <ModulesTable
+            modules={selectedConstraints}
+            selectedModules={selectedConstraints}
+            setSelectedModules={setSelectedConstraints}
+            deleteMethod={handleDelete}
+            type="c"
+            visible={gotResults}
           />
-          <ModulesTable modules={selectedConstraints} selectedModules={selectedConstraints} setSelectedModules={setSelectedConstraints} deleteMethod={handleDelete} type="c" />
+          }
           <div className={classes.buttonContainer}>
             {gotResults ? <ResetButton /> : <SendButton />}
           </div>
-          <div>{returnedModules.map((mod: { name: any; }) => mod.name)}</div>
         </Container>
       </MediaQuery>
     </main>

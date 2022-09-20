@@ -99,12 +99,15 @@ type Props = {
   selectedModules: Module[],
   setSelectedModules: Function,
   deleteMethod: Function,
+  visible: boolean,
 };
 
 export default function ModuleDisplay({ module,
                                         selectedModules,
                                         setSelectedModules,
-                                        deleteMethod }: Props) {
+                                        deleteMethod,
+                                        visible,
+                                      }: Props) {
   const { classes } = useStyles();
 
   const handleChange = (e: number | undefined, id: string) => {
@@ -143,6 +146,7 @@ export default function ModuleDisplay({ module,
               classNames={{ input: classes.numberInput }}
               defaultValue={1}
               value={module.amount}
+              disabled={visible}
               onChange={(e) => handleChange(e, module.value)}
               min={1}
               max={99}
@@ -151,7 +155,8 @@ export default function ModuleDisplay({ module,
             />
             </div>
             <div className={classes.deleteCell}>
-              <Delete method={() => deleteMethod(module, 'm')} />
+              {!visible && <Delete method={() => deleteMethod(module, 'm')} />
+              }
             </div>
           </div>
         </div>

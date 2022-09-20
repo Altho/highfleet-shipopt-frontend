@@ -100,13 +100,16 @@ type Props = {
   selectedModules: any,
   setSelectedModules: any,
   type: string
+  visible: any
 };
 
 export default function ModulesTable({ modules,
                                        deleteMethod,
                                        selectedModules,
                                        setSelectedModules,
-                                       type }: Props) {
+                                       type,
+                                       visible,
+                                     }: Props) {
   const { classes } = useStyles();
 
   // @ts-ignore
@@ -119,6 +122,7 @@ export default function ModulesTable({ modules,
           selectedModules={selectedModules}
           setSelectedModules={setSelectedModules}
           deleteMethod={deleteMethod}
+          visible={visible}
         />)
           :
           (
