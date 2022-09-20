@@ -122,6 +122,7 @@ export default function ConstraintDisplay({
       // @ts-ignore
       updatedValue.range = rangeValue;
       setSelectedConstraint(constraints);
+      console.log(selectedConstraint);
     }
   };
 
@@ -154,7 +155,7 @@ export default function ConstraintDisplay({
               label={value => `${value} ${constraint.units}`}
               min={constraint.min}
               max={constraint.max}
-              value={rangeValue}
+              value={constraint.range}
               /* eslint-disable-next-line @typescript-eslint/no-shadow */
               onChange={(rangeValue) => handleChange(rangeValue, constraint.value)}
               thumbChildren={<SliderImage path={constraint.value} />}

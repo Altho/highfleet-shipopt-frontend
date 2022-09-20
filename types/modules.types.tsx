@@ -54,7 +54,7 @@ export interface Constraint {
   max: number,
   units: string,
   offset: string,
-  range: number[]
+  range: [number, number]
 
 }
 
