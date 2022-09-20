@@ -159,6 +159,7 @@ export default function HomePage({ modules, constraints }: IndexProps) {
     const receivedModules = data.modules;
     // const filteredModules = receivedModules.filter((module: any) => module > 0);
     console.log('filtered', receivedModules);
+    setSelectedModules([]);
     const moduleArray: Module[] = [];
     Object.entries(receivedModules).forEach(([key, amount]) => {
       // @ts-ignore
