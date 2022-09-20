@@ -1,6 +1,7 @@
 import { Container, createStyles, MediaQuery, Button, LoadingOverlay } from '@mantine/core';
 import { useState } from 'react';
 import { IconCalculator, IconArrowBack, IconX } from '@tabler/icons';
+import { showNotification } from '@mantine/notifications';
 import SelectModule from '../components/Select-Module/SelectModule';
 import ModulesTable from '../components/ModulesTable/ModulesTable';
 import Header from '../components/Layout/Header';
@@ -155,6 +156,17 @@ export default function HomePage({ modules, constraints }: IndexProps) {
     const receivedTime = (new Date()).getTime();
     const delay = receivedTime - sendTime;
     console.log(`Response received in ${delay} ms !`);
+    console.log(data);
+    if (data.error === 'Infeasible problem') {
+      showNotification({
+        icon: <IconX />,
+        color: 'red',
+        autoClose: 5000,
+        title: 'Infeasible problem !',
+        message: 'The constraints applied make the problem unsolvable. Please adjust settings and try again',
+      });
+      return;
+    }
     console.log(data.modules);
     const receivedModules = data.modules;
     // const filteredModules = receivedModules.filter((module: any) => module > 0);
