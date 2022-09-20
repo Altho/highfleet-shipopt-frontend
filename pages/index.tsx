@@ -1,6 +1,6 @@
 import { Container, createStyles, MediaQuery, Button, LoadingOverlay } from '@mantine/core';
 import { useState } from 'react';
-import { IconCalculator, IconArrowBack } from '@tabler/icons';
+import { IconCalculator, IconArrowBack, IconX } from '@tabler/icons';
 import SelectModule from '../components/Select-Module/SelectModule';
 import ModulesTable from '../components/ModulesTable/ModulesTable';
 import Header from '../components/Layout/Header';
@@ -80,6 +80,7 @@ const useStyles = createStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    gap: '20px',
   },
   button: {
     fontFamily: 'Changa, sans serif',
@@ -106,6 +107,8 @@ export default function HomePage({ modules, constraints }: IndexProps) {
   const [selectedConstraints, setSelectedConstraints] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<any>(false);
   const [visible, setVisible] = useState<any>(false);
+  const [previousModules, setPreviousModules] = useState<any>([]);
+  const [previousConstraints, setPreviousConstraints] = useState<any>([]);
   const [gotResults, setGotResults] = useState<any>(false);
 
   const handleSelect = (newValue: string, type: string) => {
@@ -123,6 +126,8 @@ export default function HomePage({ modules, constraints }: IndexProps) {
   };
 
   const handleSubmit = async () => {
+    setPreviousModules([...selectedModules]);
+    setPreviousConstraints([...selectedConstraints]);
     const modulesToSend = selectedModules.reduce((acc, { value, amount }) => {
       acc[value] = amount;
       return acc;
@@ -181,6 +186,14 @@ export default function HomePage({ modules, constraints }: IndexProps) {
     setModuleList(modules);
     setConstraintList(constraints);
     setReturnedModules([]);
+    setPreviousConstraints([]);
+    setPreviousModules([]);
+    setGotResults(false);
+  };
+
+  const handlePrevious = () => {
+    setSelectedConstraints([...previousConstraints]);
+    setSelectedModules([...previousModules]);
     setGotResults(false);
   };
   const handleDelete = (module: Module, type: string): void => {
@@ -217,16 +230,27 @@ export default function HomePage({ modules, constraints }: IndexProps) {
       </Button>
     );
 
-  const ResetButton = () => (
+  const ClearButton = () => (
       <Button
-        leftIcon={<IconArrowBack />}
+        leftIcon={<IconX />}
         color="red"
         className={classes.button}
         onClick={handleReset}
       >
-        Reset
+        Clear
       </Button>
     );
+
+  const PreviousButton = () => (
+    <Button
+      leftIcon={<IconArrowBack />}
+      color="blue"
+      className={classes.button}
+      onClick={handlePrevious}
+    >
+      Previous
+    </Button>
+  );
 
   return (
     <main className={classes.mainDiv}>
@@ -270,7 +294,7 @@ export default function HomePage({ modules, constraints }: IndexProps) {
           />
           }
           <div className={classes.buttonContainer}>
-            {gotResults ? <ResetButton /> : <SendButton />}
+            {gotResults ? <div className={classes.buttonContainer}><PreviousButton /><ClearButton /></div> : <SendButton />}
           </div>
         </Container>
       </MediaQuery>
