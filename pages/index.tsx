@@ -127,71 +127,79 @@ export default function HomePage({ modules, constraints }: IndexProps) {
   };
 
   const handleSubmit = async () => {
-    setPreviousModules([...selectedModules]);
-    setPreviousConstraints([...selectedConstraints]);
-    const modulesToSend = selectedModules.reduce((acc, { value, amount }) => {
-      acc[value] = amount;
-      return acc;
-    }, {});
+    try {
+      setPreviousModules([...selectedModules]);
+      setPreviousConstraints([...selectedConstraints]);
+      const modulesToSend = selectedModules.reduce((acc, { value, amount }) => {
+        acc[value] = amount;
+        return acc;
+      }, {});
 
-    const constraintsToSend = selectedConstraints.reduce((acc, { value, range }) => {
-      acc[value] = { min: range[0], max: range[1] };
-      return acc;
-    }, {});
+      const constraintsToSend = selectedConstraints.reduce((acc, { value, range }) => {
+        acc[value] = { min: range[0], max: range[1] };
+        return acc;
+      }, {});
 
-    const sendData = {
-      modules: modulesToSend,
-      constraints: constraintsToSend,
-    };
-    // const constraintsToSend = selectedConstraints.map((mod) => {
-    //   mod.value: {min: mod.range[0], max: mod.range[1]}
-    // })
-    // console.log('sending data...');
-    const sendTime = (new Date()).getTime();
-    setVisible(true);
-    setIsLoading(true);
-    const data = await sendModules('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/opt', sendData);
-    setIsLoading(false);
-    setVisible(false);
-    const receivedTime = (new Date()).getTime();
-    const delay = receivedTime - sendTime;
-    console.log(`Response received in ${delay} ms !`);
-    console.log(data);
-    if (data.error === 'Infeasible problem') {
+      const sendData = {
+        modules: modulesToSend,
+        constraints: constraintsToSend,
+      };
+      const sendTime = (new Date()).getTime();
+      setVisible(true);
+      setIsLoading(true);
+      const data = await sendModules('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/opt', sendData);
+      setIsLoading(false);
+      setVisible(false);
+      const receivedTime = (new Date()).getTime();
+      const delay = receivedTime - sendTime;
+      console.log(`Response received in ${delay} ms !`);
+      console.log(data);
+      if (data.error === 'Infeasible problem') {
+        showNotification({
+          icon: <IconX />,
+          color: 'red',
+          autoClose: 5000,
+          title: 'Infeasible problem !',
+          message: 'The constraints applied make the problem unsolvable. Please adjust settings and try again',
+        });
+        return;
+      }
+      console.log(data.modules);
+      const receivedModules = data.modules;
+      // const filteredModules = receivedModules.filter((module: any) => module > 0);
+      console.log('filtered', receivedModules);
+      setSelectedModules([]);
+      const moduleArray: Module[] = [];
+      Object.entries(receivedModules).forEach(([key, amount]) => {
+        // @ts-ignore
+        if (amount > 0) {
+          // @ts-ignore
+          moduleArray.push({ name: key, value: amount });
+          const returnValueObject = modules.find((mod: any) => mod.value === key);
+          if (returnValueObject) {
+            if (typeof amount === 'number') {
+              returnValueObject.amount = amount;
+            }
+          }
+          // eslint-disable-next-line @typescript-eslint/no-shadow
+          setSelectedModules(selectedModules => [...selectedModules, returnValueObject]);
+        }
+      });
+      setReturnedModules(moduleArray);
+      setGotResults(true);
+      // const mapped = receivedModules.map((module: any) => (module));
+      // console.log(mapped);
+    } catch (error) {
       showNotification({
         icon: <IconX />,
         color: 'red',
         autoClose: 5000,
-        title: 'Infeasible problem !',
-        message: 'The constraints applied make the problem unsolvable. Please adjust settings and try again',
+        title: 'Something went wrong',
+        message: "We can't access the server. Check your internet connection and try again",
       });
-      return;
+      setVisible(false);
+      setIsLoading(false);
     }
-    console.log(data.modules);
-    const receivedModules = data.modules;
-    // const filteredModules = receivedModules.filter((module: any) => module > 0);
-    console.log('filtered', receivedModules);
-    setSelectedModules([]);
-    const moduleArray: Module[] = [];
-    Object.entries(receivedModules).forEach(([key, amount]) => {
-      // @ts-ignore
-      if (amount > 0) {
-        // @ts-ignore
-        moduleArray.push({ name: key, value: amount });
-        const returnValueObject = modules.find((mod: any) => mod.value === key);
-        if (returnValueObject) {
-          if (typeof amount === 'number') {
-            returnValueObject.amount = amount;
-          }
-        }
-        // eslint-disable-next-line @typescript-eslint/no-shadow
-        setSelectedModules(selectedModules => [...selectedModules, returnValueObject]);
-      }
-    });
-    setReturnedModules(moduleArray);
-    setGotResults(true);
-    // const mapped = receivedModules.map((module: any) => (module));
-    // console.log(mapped);
   };
   const handleReset = () => {
     setSelectedModules([]);
