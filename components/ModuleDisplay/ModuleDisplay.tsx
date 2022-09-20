@@ -1,4 +1,6 @@
-import { createStyles, NumberInput } from '@mantine/core';
+import { createStyles, NumberInput, Modal, Badge } from '@mantine/core';
+import { useState } from 'react';
+import { IconPlus } from '@tabler/icons';
 import { CreateBadges } from '../ModulesTable/CreateBadges';
 import Delete from '../ModulesTable/Delete';
 import { Module } from '../../types/modules.types';
@@ -18,13 +20,15 @@ const useStyles = createStyles((theme) => ({
     backgroundImage: theme.colorScheme === 'dark' ? 'url("./rustedmetal.jpg")' : 'url("./concrete2.jpg")',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
+    justifyContent: 'center',
     boxShadow: 'inset 0.2em 0.2em 0.2em 0 rgba(255,255,255,0.5), inset -0.2em -0.2em 0.2em 0 rgba(0,0,0,0.5)',
   },
   showInfos: {
-    display: 'flex',
-    transition: 'margin 1s linear',
-    marginTop: '0',
-    justifyContent: 'center',
+    cursor: 'pointer',
+    '&:hover': {
+      transform: 'scale(1.1)',
+      transition: '0.1s linear',
+    },
   },
   ribbon: {
     width: '9px',
@@ -39,19 +43,24 @@ const useStyles = createStyles((theme) => ({
   },
   numberDisplay: {
     height: '50px',
+    width: '50%',
+    marginLeft: '50%',
+    transform: 'translateX(-50%)',
+    color: 'red',
+    display: 'flex',
+    // display: 'initial',
   },
 
   nameDisplay: {
     fontFamily: 'Bungee, sans-serif',
+    display: 'flex',
+    justifyContent: 'center',
     color: 'white',
-    width: '20%',
-    marginLeft: '20px',
     padding: '10px',
+    minWidth: '180px',
     webkitTextStrokeWidth: '1px',
     webkitTextStrokeColor: 'black',
-    backgroundSize: 'cover',
     textShadow: '0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15)',
-    backgroundRepeat: 'no-repeat',
     borderRadius: '10px',
   },
   badgeContainer: {
@@ -59,8 +68,7 @@ const useStyles = createStyles((theme) => ({
     flexWrap: 'wrap',
     padding: '0 20px 0 20px',
     gap: '5px',
-    justifyContent: 'center',
-    maxWidth: '50%',
+    justifyContent: 'space-around',
   },
   deleteCell: {
     display: 'flex',
@@ -69,14 +77,10 @@ const useStyles = createStyles((theme) => ({
     height: '50px',
   },
   mainInfos: {
-    display: 'flex',
     width: '100%',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    flexWrap: 'wrap',
   },
   moduleContainer: {
-    position: 'relative',
   },
 
   sliderRoot: {
@@ -92,6 +96,34 @@ const useStyles = createStyles((theme) => ({
     borderWidth: 0,
 
   },
+  endContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+  startContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+  infoContainer: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '10px',
+  },
+  showAmount: {
+    fontFamily: 'Bungee, sans-serif',
+    fontSize: '2em',
+    display: 'flex',
+    justifyContent: 'center',
+    color: 'darkred',
+    padding: '10px',
+    webkitTextStrokeWidth: '1px',
+    webkitTextStrokeColor: 'black',
+    textShadow: '0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15)',
+    borderRadius: '10px',
+  }
 }));
 
 type Props = {
@@ -109,6 +141,7 @@ export default function ModuleDisplay({ module,
                                         visible,
                                       }: Props) {
   const { classes } = useStyles();
+  const [opened, setOpened] = useState<any>(false);
 
   const handleChange = (e: number | undefined, id: string) => {
     const modules = [...selectedModules];
@@ -124,43 +157,67 @@ export default function ModuleDisplay({ module,
 
   // @ts-ignore
   return (
+    <>
+    <Modal
+      opened={opened}
+      onClose={() => setOpened(false)}
+      title={module.label}
+    >
+      <div className={classes.badgeContainer}><CreateBadges module={module} /></div>
+    </Modal>
+
     <div className={classes.moduleContainer}>
       <div className={classes.moduleContainer}>
-        <div className={classes.ribbon} />
         <div
           key={module.value}
           className={classes.module}
           style={{ backgroundPosition: module.offset }}
         >
+          <div>
           <div
             className={classes.mainInfos}
           >
             <div className={classes.nameDisplay}>
               {module.label}
             </div>
-            <div className={classes.badgeContainer}>
-              {/* @ts-ignore */}
-              <CreateBadges module={module} />
+
+            <div className={classes.numberDisplay}>
+              {!visible ? <NumberInput
+                classNames={{ input: classes.numberInput }}
+                defaultValue={1}
+                value={module.amount}
+                disabled={visible}
+                onChange={(e) => handleChange(e, module.value)}
+                min={1}
+                max={99}
+                stepHoldDelay={500}
+                stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
+              /> :
+                (<div className={classes.showAmount}>{`x${module.amount}`}</div>)
+              }
             </div>
-            <div className={classes.numberDisplay}><NumberInput
-              classNames={{ input: classes.numberInput }}
-              defaultValue={1}
-              value={module.amount}
-              disabled={visible}
-              onChange={(e) => handleChange(e, module.value)}
-              min={1}
-              max={99}
-              stepHoldDelay={500}
-              stepHoldInterval={(t) => Math.max(1000 / t ** 2, 25)}
-            />
-            </div>
+              <div className={classes.infoContainer}>
+              <Badge
+                size="xl"
+                className={classes.showInfos}
+                variant="filled"
+                style={{ alignItems: 'center', cursor: 'pointer' }}
+                onClick={() => setOpened(true)}
+              >Show Infos
+              </Badge>
+              </div>
             <div className={classes.deleteCell}>
               {!visible && <Delete method={() => deleteMethod(module, 'm')} />
               }
             </div>
           </div>
+          </div>
+            <div className={classes.badgeContainer}>
+              {/* @ts-ignore */}
+            </div>
         </div>
       </div>
     </div>
+    </>
   );
 }

@@ -1,9 +1,10 @@
 import { IconCircleMinus } from '@tabler/icons';
-import { ActionIcon, createStyles } from '@mantine/core';
+import { ActionIcon, createStyles, Badge } from '@mantine/core';
 
 const useStyles = createStyles((theme) => ({
   main: {
-   color: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'black',
+   marginTop: '10px',
+    cursor: 'pointer',
     '&:hover': {
       transform: 'scale(1.1)',
       transition: '0.1s linear',
@@ -14,12 +15,15 @@ const useStyles = createStyles((theme) => ({
 export default function Delete({ method }: any) {
  const { classes } = useStyles();
   return (
-    <ActionIcon>
-      <IconCircleMinus
-        className={classes.main}
-        size={24}
-        onClick={method}
-      />
-    </ActionIcon>
+    <Badge
+      className={classes.main}
+      variant={'filled'}
+      color={'red'}
+      size={'lg'}
+      radius={'xl'}
+      onClick={method}
+    >
+      Delete
+    </Badge>
   );
 }

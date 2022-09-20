@@ -1,4 +1,4 @@
-import { createStyles } from '@mantine/core';
+import { createStyles, SimpleGrid } from '@mantine/core';
 import { Module } from '../../types/modules.types';
 import ModuleDisplay from '../ModuleDisplay/ModuleDisplay';
 import ConstraintDisplay from '../ConstraintDisplay/ConstraintDisplay';
@@ -113,27 +113,45 @@ export default function ModulesTable({ modules,
   const { classes } = useStyles();
 
   // @ts-ignore
+  if (type === 'm') {
+    return (
+      <div className={classes.moduleContainer}>
+        <SimpleGrid
+          cols={4}
+          spacing="lg"
+          breakpoints={[
+            { maxWidth: 980, cols: 3, spacing: 'md' },
+            { maxWidth: 755, cols: 2, spacing: 'sm' },
+            { maxWidth: 600, cols: 1, spacing: 'sm' },
+          ]}
+        >
+          {modules.map((mod) => (
+              <ModuleDisplay
+                module={mod}
+                selectedModules={selectedModules}
+                setSelectedModules={setSelectedModules}
+                deleteMethod={deleteMethod}
+                visible={visible}
+              />
+            )
+          )
+          }
+        </SimpleGrid>
+      </div>
+    );
+  }
   return (
     <div className={classes.moduleContainer}>
-      {modules.map((mod) => (
-        type === 'm' ? (
-        <ModuleDisplay
-          module={mod}
-          selectedModules={selectedModules}
-          setSelectedModules={setSelectedModules}
+    {
+      modules.map((mod) => (
+        <ConstraintDisplay
+          /* @ts-ignore */
+          constraint={mod}
+          selectedConstraint={selectedModules}
+          setSelectedConstraint={setSelectedModules}
           deleteMethod={deleteMethod}
-          visible={visible}
-        />)
-          :
-          (
-          <ConstraintDisplay
-            /* @ts-ignore */
-            constraint={mod}
-            selectedConstraint={selectedModules}
-            setSelectedConstraint={setSelectedModules}
-            deleteMethod={deleteMethod}
-          />)
-      ))}
+        />))
+    }
     </div>
-  );
+    );
 }

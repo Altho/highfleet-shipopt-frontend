@@ -68,34 +68,34 @@ export const CreateBadges = ({ module }) => {
         const Icon = getIcon(mod.value);
         return (
           <Tooltip label="Type">
-          <Badge
-            className={classes.badgeType}
-            variant="filled"
-            size="lg"
-            leftSection={Icon}
-            radius="sm"
-          >
-          {mod.value}
-          </Badge>
+            <Badge
+              className={classes.badgeType}
+              variant="filled"
+              size="lg"
+              leftSection={Icon}
+              radius="sm"
+            >
+              {mod.value}
+            </Badge>
           </Tooltip>
-      );
+        );
       }
       if (mod.id === 'cost' && mod.value > 0) {
-          return (
-            <Tooltip label="Cost">
-              <Badge
-                className={classes.badgeType}
-                variant="filled"
-                color="green"
-                size="lg"
-                leftSection={<IconCurrencyDollar />}
-                radius="sm"
-              >
-                {mod.value}
-              </Badge>
-            </Tooltip>
-          );
-        }
+        return (
+          <Tooltip label="Cost">
+            <Badge
+              className={classes.badgeType}
+              variant="filled"
+              color="green"
+              size="lg"
+              leftSection={<IconCurrencyDollar />}
+              radius="sm"
+            >
+              {mod.value}
+            </Badge>
+          </Tooltip>
+        );
+      }
       if (mod.id === 'fuel_cap' && mod.value > 0) {
         return (
           <Tooltip label="Fuel Cap">
