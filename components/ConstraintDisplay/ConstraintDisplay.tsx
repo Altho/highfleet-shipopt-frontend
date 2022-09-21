@@ -138,7 +138,6 @@ export default function ConstraintDisplay({
   return (
     <div className={classes.moduleContainer}>
       <div className={classes.moduleContainer}>
-        <div className={classes.ribbon} />
         <div
           key={constraint.value}
           className={classes.module}

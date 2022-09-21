@@ -30,7 +30,7 @@ const useStyles = createStyles(() => ({
 }));
 
 // eslint-disable-next-line consistent-return
-const getIcon = (group: any) => {
+export const getIcon = (group: any) => {
   switch (group) {
     case 'Offense':
       return <IconSword />;
