@@ -161,7 +161,6 @@ export default function ModuleDisplay({ module,
   const { classes } = useStyles();
   const [opened, setOpened] = useState<any>(false);
   const Icon = getIcon(module.group);
-  console.log('icon', Icon);
 
   const handleChange = (e: number | undefined, id: string) => {
     const modules = [...selectedModules];

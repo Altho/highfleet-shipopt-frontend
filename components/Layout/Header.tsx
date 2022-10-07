@@ -1,5 +1,7 @@
-import { Container, createStyles } from '@mantine/core';
+import { Container, createStyles, Button } from '@mantine/core';
 import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
+import { useKindeAuth } from '@kinde-oss/kinde-auth-nextjs';
+import Link from 'next/link';
 
 const useStyles = createStyles(() => ({
   main: {
@@ -18,12 +20,25 @@ const useStyles = createStyles(() => ({
 }));
 
 export default function Header() {
+  const auth = useKindeAuth();
+  const { user } = auth;
+  console.log('auth', auth);
   const { classes } = useStyles();
   return (
     <header className={classes.main}>
       <Container>
         <div className={classes.logo}>Highfleet Cogitator</div>
       </Container>
+      {!user ? (
+        <Link href="/api/auth/login">
+          <Button>Sign in</Button>
+        </Link>
+      ) : (
+        <Link href="/api/auth/logout">
+          <Button>{user.first_name}, log out ?</Button>
+        </Link>
+      )}
+      {user ? user.first_name : 'please login'}
       <ColorSchemeToggle />
     </header>
   );

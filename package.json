@@ -21,6 +21,7 @@
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/server": "^11.4.0",
+    "@kinde-oss/kinde-auth-nextjs": "^1.0.4",
     "@mantine/carousel": "5.2.4",
     "@mantine/core": "5.2.4",
     "@mantine/dates": "5.2.4",

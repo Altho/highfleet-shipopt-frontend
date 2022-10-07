@@ -127,6 +127,7 @@ export default function ModulesTable({ modules,
         >
           {modules.map((mod) => (
               <ModuleDisplay
+                key={mod.value}
                 module={mod}
                 selectedModules={selectedModules}
                 setSelectedModules={setSelectedModules}
@@ -140,11 +141,13 @@ export default function ModulesTable({ modules,
       </div>
     );
   }
+  // @ts-ignore
   return (
     <div className={classes.moduleContainer}>
     {
       modules.map((mod) => (
         <ConstraintDisplay
+          key={mod.value}
           /* @ts-ignore */
           constraint={mod}
           selectedConstraint={selectedModules}

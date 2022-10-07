@@ -61,11 +61,11 @@ export const getStaticProps = async () => {
 
 const useStyles = createStyles((theme) => ({
   mainDiv: {
-    backgroundImage: theme.colorScheme === 'dark' ? 'url(../bg3.png), linear-gradient(to top, #ba8b02, #181818)' : 'url(../bg2_light.svg), url(../bg1_light.svg), linear-gradient(to top, #334d50, #cbcaa5)',
+    backgroundImage: theme.colorScheme === 'dark' ? 'url(../background.webp), linear-gradient(to top, #ba8b02, #181818)' : 'url(../bg2_light.svg), url(../bg1_light.svg), linear-gradient(to top, #334d50, #cbcaa5)',
     backgroundPosition: 'bottom',
-    backgroundSize: 'cover',
+    backgroundSize: '1.5cm',
     backgroundAttachment: 'fixed',
-    backgroundRepeat: 'no-repeat',
+    backgroundRepeat: 'repeat',
     minHeight: '100vh',
     boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px;',
     amount: 0,
@@ -112,6 +112,8 @@ export default function HomePage({ modules, constraints }: IndexProps) {
   const [previousConstraints, setPreviousConstraints] = useState<any>([]);
   const [gotResults, setGotResults] = useState<any>(false);
 
+
+
   const handleSelect = (newValue: string, type: string) => {
     if (type === 'm') {
       const returnValueObject = moduleList.find((mod: Module) => mod.value === newValue);
@@ -125,8 +127,12 @@ export default function HomePage({ modules, constraints }: IndexProps) {
     setSelectedConstraints(selectedConstraints => [...selectedConstraints, returnValueObject]);
     setConstraintList(constraintList.filter((module: Module) => module.value !== newValue));
   };
+  const totalAmount = (modules) => {
+    modules.map((mod) => mod.amount);
+  };
 
   const handleSubmit = async () => {
+
     try {
       setPreviousModules([...selectedModules]);
       setPreviousConstraints([...selectedConstraints]);
@@ -152,8 +158,6 @@ export default function HomePage({ modules, constraints }: IndexProps) {
       setVisible(false);
       const receivedTime = (new Date()).getTime();
       const delay = receivedTime - sendTime;
-      console.log(`Response received in ${delay} ms !`);
-      console.log(data);
       if (data.error === 'Infeasible problem') {
         showNotification({
           icon: <IconX />,
@@ -167,7 +171,6 @@ export default function HomePage({ modules, constraints }: IndexProps) {
       console.log(data.modules);
       const receivedModules = data.modules;
       // const filteredModules = receivedModules.filter((module: any) => module > 0);
-      console.log('filtered', receivedModules);
       setSelectedModules([]);
       const moduleArray: Module[] = [];
       Object.entries(receivedModules).forEach(([key, amount]) => {
@@ -186,7 +189,11 @@ export default function HomePage({ modules, constraints }: IndexProps) {
         }
       });
       setReturnedModules(moduleArray);
+      console.log(`Response received in ${delay} ms !`);
+      // console.log('total amount',totalAmount(receivedModules));
+      // console.log('selected modules', receivedModules);
       setGotResults(true);
+      console.log(data);
       // const mapped = receivedModules.map((module: any) => (module));
       // console.log(mapped);
     } catch (error) {
@@ -201,6 +208,7 @@ export default function HomePage({ modules, constraints }: IndexProps) {
       setIsLoading(false);
     }
   };
+
   const handleReset = () => {
     setSelectedModules([]);
     setSelectedConstraints([]);
