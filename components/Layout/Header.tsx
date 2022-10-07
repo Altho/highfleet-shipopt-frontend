@@ -1,7 +1,7 @@
 import { Container, createStyles, Button } from '@mantine/core';
-import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 import { useKindeAuth } from '@kinde-oss/kinde-auth-nextjs';
 import Link from 'next/link';
+import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 
 const useStyles = createStyles(() => ({
   main: {

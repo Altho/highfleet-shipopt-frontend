@@ -6,50 +6,56 @@ import SelectModule from '../components/Select-Module/SelectModule';
 import ModulesTable from '../components/ModulesTable/ModulesTable';
 import Header from '../components/Layout/Header';
 import Title from '../components/Layout/Title';
-import { Module, Constraint, ModuleInput, ConstraintInput, IndexProps } from '../types/modules.types';
+import {
+  Module,
+  Constraint,
+  ModuleInput,
+  ConstraintInput,
+  IndexProps,
+} from '../types/modules.types';
 import { getBackgroundOffset, sendModules } from '../libs/utilities';
 
 export const getStaticProps = async () => {
-  const req = await fetch('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/data');
+  const req = await fetch(
+    'https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/data'
+  );
   const res = await req.json();
 
   const modulesRes = res.modules;
   const constraintsRes = res.constraints;
 
-  const modules =
-    modulesRes.map((module: ModuleInput): Module => (
-      {
-        value: module.id,
-        label: module.common_name,
-        group: module.type,
-        cost: module.cost,
-        fuel_cap: module.fuel_cap,
-        hp: module.hp,
-        squares: module.squares,
-        weight: module.weight,
-        fuel_rate: module.fuel_rate,
-        width: module.width,
-        height: module.height,
-        thrust: module.thrust,
-        firepower: module.firewpower,
-        energy: module.energy,
-        offset: getBackgroundOffset(),
-        amount: 1,
-      }
-    ));
+  const modules = modulesRes.map(
+    (module: ModuleInput): Module => ({
+      value: module.id,
+      label: module.common_name,
+      group: module.type,
+      cost: module.cost,
+      fuel_cap: module.fuel_cap,
+      hp: module.hp,
+      squares: module.squares,
+      weight: module.weight,
+      fuel_rate: module.fuel_rate,
+      width: module.width,
+      height: module.height,
+      thrust: module.thrust,
+      firepower: module.firewpower,
+      energy: module.energy,
+      offset: getBackgroundOffset(),
+      amount: 1,
+    })
+  );
 
-  const constraints =
-    constraintsRes.map((constraint: ConstraintInput): Constraint => (
-      {
-        label: constraint.common_name,
-        value: constraint.id,
-        min: constraint.min,
-        max: constraint.max,
-        units: constraint.units,
-        offset: getBackgroundOffset(),
-        range: [20, 80],
-      }
-    ));
+  const constraints = constraintsRes.map(
+    (constraint: ConstraintInput): Constraint => ({
+      label: constraint.common_name,
+      value: constraint.id,
+      min: constraint.min,
+      max: constraint.max,
+      units: constraint.units,
+      offset: getBackgroundOffset(),
+      range: [20, 80],
+    })
+  );
 
   return {
     props: {
@@ -61,7 +67,10 @@ export const getStaticProps = async () => {
 
 const useStyles = createStyles((theme) => ({
   mainDiv: {
-    backgroundImage: theme.colorScheme === 'dark' ? 'url(../background.webp), linear-gradient(to top, #ba8b02, #181818)' : 'url(../bg2_light.svg), url(../bg1_light.svg), linear-gradient(to top, #334d50, #cbcaa5)',
+    backgroundImage:
+      theme.colorScheme === 'dark'
+        ? 'url(../background.webp), linear-gradient(to top, #ba8b02, #181818)'
+        : 'url(../bg2_light.svg), url(../bg1_light.svg), linear-gradient(to top, #334d50, #cbcaa5)',
     backgroundPosition: 'bottom',
     backgroundSize: '1.5cm',
     backgroundAttachment: 'fixed',
@@ -112,27 +121,21 @@ export default function HomePage({ modules, constraints }: IndexProps) {
   const [previousConstraints, setPreviousConstraints] = useState<any>([]);
   const [gotResults, setGotResults] = useState<any>(false);
 
-
-
   const handleSelect = (newValue: string, type: string) => {
     if (type === 'm') {
       const returnValueObject = moduleList.find((mod: Module) => mod.value === newValue);
       // eslint-disable-next-line @typescript-eslint/no-shadow
-      setSelectedModules(selectedModules => [...selectedModules, returnValueObject]);
+      setSelectedModules((selectedModules) => [...selectedModules, returnValueObject]);
       setModuleList(moduleList.filter((module: Module) => module.value !== newValue));
       return;
     }
     const returnValueObject = constraintList.find((mod: Constraint) => mod.value === newValue);
     // eslint-disable-next-line @typescript-eslint/no-shadow
-    setSelectedConstraints(selectedConstraints => [...selectedConstraints, returnValueObject]);
+    setSelectedConstraints((selectedConstraints) => [...selectedConstraints, returnValueObject]);
     setConstraintList(constraintList.filter((module: Module) => module.value !== newValue));
-  };
-  const totalAmount = (modules) => {
-    modules.map((mod) => mod.amount);
   };
 
   const handleSubmit = async () => {
-
     try {
       setPreviousModules([...selectedModules]);
       setPreviousConstraints([...selectedConstraints]);
@@ -150,13 +153,16 @@ export default function HomePage({ modules, constraints }: IndexProps) {
         modules: modulesToSend,
         constraints: constraintsToSend,
       };
-      const sendTime = (new Date()).getTime();
+      const sendTime = new Date().getTime();
       setVisible(true);
       setIsLoading(true);
-      const data = await sendModules('https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/opt', sendData);
+      const data = await sendModules(
+        'https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/opt',
+        sendData
+      );
       setIsLoading(false);
       setVisible(false);
-      const receivedTime = (new Date()).getTime();
+      const receivedTime = new Date().getTime();
       const delay = receivedTime - sendTime;
       if (data.error === 'Infeasible problem') {
         showNotification({
@@ -164,7 +170,8 @@ export default function HomePage({ modules, constraints }: IndexProps) {
           color: 'red',
           autoClose: 5000,
           title: 'Infeasible problem !',
-          message: 'The constraints applied make the problem unsolvable. Please adjust settings and try again',
+          message:
+            'The constraints applied make the problem unsolvable. Please adjust settings and try again',
         });
         return;
       }
@@ -185,7 +192,7 @@ export default function HomePage({ modules, constraints }: IndexProps) {
             }
           }
           // eslint-disable-next-line @typescript-eslint/no-shadow
-          setSelectedModules(selectedModules => [...selectedModules, returnValueObject]);
+          setSelectedModules((selectedModules) => [...selectedModules, returnValueObject]);
         }
       });
       setReturnedModules(moduleArray);
@@ -229,8 +236,9 @@ export default function HomePage({ modules, constraints }: IndexProps) {
     if (type === 'm') {
       const selectedObject = modules.find((mod) => mod.value === module.value);
       if (selectedObject) {
-        setSelectedModules(prevState => prevState.filter(
-          elem => elem.value !== selectedObject.value));
+        setSelectedModules((prevState) =>
+          prevState.filter((elem) => elem.value !== selectedObject.value)
+        );
         // eslint-disable-next-line @typescript-eslint/no-shadow
         setModuleList((moduleList: Module[]) => [selectedObject, ...moduleList]);
         // setModuleList(moduleList.sort());
@@ -240,8 +248,9 @@ export default function HomePage({ modules, constraints }: IndexProps) {
     }
     const selectedConstraint = constraints.find((mod) => mod.value === module.value);
     if (selectedConstraint) {
-      setSelectedConstraints(prevState => prevState.filter(
-        elem => elem.value !== selectedConstraint.value));
+      setSelectedConstraints((prevState) =>
+        prevState.filter((elem) => elem.value !== selectedConstraint.value)
+      );
       // eslint-disable-next-line @typescript-eslint/no-shadow
       setConstraintList((constraintList: Constraint[]) => [selectedConstraint, ...constraintList]);
       setConstraintsValue(null);
@@ -249,26 +258,21 @@ export default function HomePage({ modules, constraints }: IndexProps) {
   };
 
   const SendButton = () => (
-      <Button
-        leftIcon={<IconCalculator />}
-        color="orange"
-        className={classes.button}
-        onClick={handleSubmit}
-      >
-        {isLoading ? 'Calculating...' : 'Calculate'}
-      </Button>
-    );
+    <Button
+      leftIcon={<IconCalculator />}
+      color="orange"
+      className={classes.button}
+      onClick={handleSubmit}
+    >
+      {isLoading ? 'Calculating...' : 'Calculate'}
+    </Button>
+  );
 
   const ClearButton = () => (
-      <Button
-        leftIcon={<IconX />}
-        color="red"
-        className={classes.button}
-        onClick={handleReset}
-      >
-        Clear
-      </Button>
-    );
+    <Button leftIcon={<IconX />} color="red" className={classes.button} onClick={handleReset}>
+      Clear
+    </Button>
+  );
 
   const PreviousButton = () => (
     <Button
@@ -284,20 +288,19 @@ export default function HomePage({ modules, constraints }: IndexProps) {
   return (
     <main className={classes.mainDiv}>
       <Header />
-      <MediaQuery
-        query="(max-width: 1200px)"
-        styles={{ backgroundColor: 'transparent' }}
-      >
+      <MediaQuery query="(max-width: 1200px)" styles={{ backgroundColor: 'transparent' }}>
         <Container className={classes.container}>
           <LoadingOverlay visible={visible} overlayBlur={2} />
           {gotResults && <div className={classes.result}>Here are the optimal results</div>}
           <Title type="m">Modules</Title>
-          {!gotResults && <SelectModule
-            modules={moduleList}
-            value={modulesValue}
-            handleSelect={handleSelect}
-            type="m"
-          />}
+          {!gotResults && (
+            <SelectModule
+              modules={moduleList}
+              value={modulesValue}
+              handleSelect={handleSelect}
+              type="m"
+            />
+          )}
           <ModulesTable
             modules={selectedModules}
             selectedModules={selectedModules}
@@ -307,23 +310,33 @@ export default function HomePage({ modules, constraints }: IndexProps) {
             visible={gotResults}
           />
           {!gotResults && <Title type="c">Constraints</Title>}
-          {!gotResults && <SelectModule
-            modules={constraintList}
-            value={constraintsValue}
-            handleSelect={handleSelect}
-            type="c"
-          />}
-          {!gotResults && <ModulesTable
-            modules={selectedConstraints}
-            selectedModules={selectedConstraints}
-            setSelectedModules={setSelectedConstraints}
-            deleteMethod={handleDelete}
-            type="c"
-            visible={gotResults}
-          />
-          }
+          {!gotResults && (
+            <SelectModule
+              modules={constraintList}
+              value={constraintsValue}
+              handleSelect={handleSelect}
+              type="c"
+            />
+          )}
+          {!gotResults && (
+            <ModulesTable
+              modules={selectedConstraints}
+              selectedModules={selectedConstraints}
+              setSelectedModules={setSelectedConstraints}
+              deleteMethod={handleDelete}
+              type="c"
+              visible={gotResults}
+            />
+          )}
           <div className={classes.buttonContainer}>
-            {gotResults ? <div className={classes.buttonContainer}><PreviousButton /><ClearButton /></div> : <SendButton />}
+            {gotResults ? (
+              <div className={classes.buttonContainer}>
+                <PreviousButton />
+                <ClearButton />
+              </div>
+            ) : (
+              <SendButton />
+            )}
           </div>
         </Container>
       </MediaQuery>
