@@ -6,7 +6,6 @@ import { getCookie, setCookie } from 'cookies-next';
 import Head from 'next/head';
 import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
-import { KindeProvider } from '@kinde-oss/kinde-auth-nextjs';
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
@@ -29,9 +28,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
         <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
           <NotificationsProvider>
             {/* @ts-ignore */}
-            <KindeProvider>
-              <Component {...pageProps} />
-            </KindeProvider>
+            <Component {...pageProps} />
           </NotificationsProvider>
         </MantineProvider>
       </ColorSchemeProvider>

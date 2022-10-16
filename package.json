@@ -19,6 +19,7 @@
     "storybook:build": "build-storybook"
   },
   "dependencies": {
+    "@aws-amplify/ui-react": "^3.5.8",
     "@emotion/react": "^11.9.3",
     "@emotion/server": "^11.4.0",
     "@kinde-oss/kinde-auth-nextjs": "^1.0.4",
@@ -31,9 +32,12 @@
     "@mantine/prism": "5.2.4",
     "@next/bundle-analyzer": "^12.1.4",
     "@tabler/icons": "^1.92.0",
+    "amazon-cognito-identity-js": "^5.2.10",
+    "aws-amplify": "^4.3.39",
     "cookies-next": "^2.1.1",
     "dayjs": "^1.11.0",
     "embla-carousel-react": "^7.0.0",
+    "emotion": "^11.0.0",
     "next": "12.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
