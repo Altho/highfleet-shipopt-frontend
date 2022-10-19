@@ -14,6 +14,7 @@ export default function App() {
              <p>Your username is : {user.username}</p>
              <p>Your email is : {user.attributes?.email}</p>
              <p>your sub is {user.attributes?.sub}</p>
+                 <p>your have {user.attributes?.tokens} left</p>
              <button onClick={signOut}>Sign out</button>
              </div>
              ) :
