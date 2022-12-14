@@ -4,7 +4,7 @@ import { CreateBadges, getIcon } from '../ModulesTable/CreateBadges';
 import Delete from '../ModulesTable/Delete';
 import { Module } from '../../types/modules.types';
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   additionalInfos: {
     display: 'none',
     width: '100%',
@@ -16,7 +16,7 @@ const useStyles = createStyles((theme) => ({
   module: {
     // clipPath: 'polygon(0 100%, 0 88%, 1% 78%, 1% 21%, 0 11%, 0 0, 14% 0%, 36% 0, 38% 6%, 48% 6%, 51% 0%, 100% 0, 100% 11%, 100% 88%, 98% 100%, 74% 99%, 73% 93%, 63% 93%, 62% 99%)',
     padding: '10px',
-    backgroundImage: theme.colorScheme === 'dark' ? 'url("./rustedmetal.jpg")' : 'url("./concrete2.jpg")',
+    backgroundImage: 'url("./rustedmetal.jpg")',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     justifyContent: 'center',
@@ -38,7 +38,7 @@ const useStyles = createStyles((theme) => ({
     left: 0,
   },
   numberInput: {
-    backgroundColor: theme.colorScheme === 'dark' ? 'grey' : 'white',
+    backgroundColor: 'grey',
   },
   numberDisplay: {
     height: '50px',
@@ -91,11 +91,11 @@ const useStyles = createStyles((theme) => ({
 
   },
   bar: {
-    backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'black',
+    backgroundColor: '#ff7f2aff',
   },
   thumb: {
-    backgroundColor: theme.colorScheme === 'dark' ? 'transparent' : 'transparent',
-    color: theme.colorScheme === 'dark' ? 'black' : 'white',
+    backgroundColor: 'transparent',
+    color: 'black',
     borderWidth: 0,
 
   },

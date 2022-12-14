@@ -7,27 +7,27 @@ const useStyles = createStyles((theme) => ({
     // width: '400px',
     marginBottom: theme.spacing.lg,
     height: '50px',
-    backgroundColor: theme.colorScheme === 'light' ? '#aeb8c2' : '#485059',
-    border: `1px solid ${theme.colorScheme === 'dark' ? '#ff7f2aff' : 'lightgray'}`,
-    color: theme.colorScheme === 'dark' ? 'white' : 'black',
+    backgroundColor: '#485059',
+    border: '1px solid #ff7f2aff',
+    color: 'white',
     transition: '0.1s linear',
 
     '&::placeholder': {
-      color: theme.colorScheme === 'dark' ? 'white' : 'black',
+      color: 'white',
     },
     '&:hover': {
-      backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'lightgray',
+      backgroundColor: '#ff7f2aff',
       transition: '0.1s linear',
     },
 
   },
   icon: {
-    color: theme.colorScheme === 'dark' ? 'white' : 'black',
+    color: 'white',
   },
   dropdown: {
     width: '200px',
     boxShadow: 'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px',
-    border: `3px solid ${theme.colorScheme === 'dark' ? '#ff7f2aff' : 'lightgray'}`,
+    border: '3px solid #ff7f2aff',
   },
   placeholder: {
     color: 'white',
@@ -37,15 +37,15 @@ const useStyles = createStyles((theme) => ({
     fontSize: '1.3em',
 
     '&:hover': {
-      backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'lightgray',
+      backgroundColor: '#ff7f2aff',
       color: 'black',
     },
   },
   rightSection: {
-    color: theme.colorScheme === 'dark' ? 'white' : 'black',
+    color: 'white',
   },
   label: {
-    color: theme.colorScheme === 'dark' ? 'white' : 'black',
+    color: 'white',
   },
   disabled: {
     '&:hover': {

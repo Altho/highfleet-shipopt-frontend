@@ -1,7 +1,6 @@
-import { IconCircleMinus } from '@tabler/icons';
-import { ActionIcon, createStyles, Badge } from '@mantine/core';
+import { createStyles, Badge } from '@mantine/core';
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   main: {
    marginTop: '10px',
     cursor: 'pointer',
@@ -17,10 +16,10 @@ export default function Delete({ method }: any) {
   return (
     <Badge
       className={classes.main}
-      variant={'filled'}
-      color={'red'}
-      size={'lg'}
-      radius={'xl'}
+      variant="filled"
+      color="red"
+      size="lg"
+      radius="xl"
       onClick={method}
     >
       Delete

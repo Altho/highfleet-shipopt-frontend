@@ -65,12 +65,10 @@ export const getStaticProps = async () => {
   };
 };
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   mainDiv: {
     backgroundImage:
-      theme.colorScheme === 'dark'
-        ? 'url(../background.webp), linear-gradient(to top, #ba8b02, #181818)'
-        : 'url(../bg2_light.svg), url(../bg1_light.svg), linear-gradient(to top, #334d50, #cbcaa5)',
+      'url(../background.webp), linear-gradient(to top, #ba8b02, #181818)',
     backgroundPosition: 'bottom',
     backgroundSize: '1.5cm',
     backgroundAttachment: 'fixed',
@@ -80,7 +78,7 @@ const useStyles = createStyles((theme) => ({
     amount: 0,
   },
   container: {
-    backgroundColor: theme.colorScheme === 'dark' ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)',
+    backgroundColor: 'rgba(0,0,0,0.3)',
     boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
     backdropFilter: 'blur(8px)',
     paddingTop: '10px',

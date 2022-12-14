@@ -1,5 +1,4 @@
 import { Container, createStyles } from '@mantine/core';
-import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
 
 const useStyles = createStyles(() => ({
   main: {
@@ -24,7 +23,6 @@ export default function Header() {
       <Container>
         <div className={classes.logo}>Highfleet Cogitator</div>
       </Container>
-      <ColorSchemeToggle />
     </header>
   );
 }

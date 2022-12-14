@@ -1,8 +1,7 @@
 import { createStyles } from '@mantine/core';
 import { IconUnlink, IconHexagons } from '@tabler/icons';
-import { FC } from 'react';
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   main: {
     // width: '400px',
     display: 'flex',
@@ -12,11 +11,11 @@ const useStyles = createStyles((theme) => ({
     // padding: '10px 10px 10px ',
     marginTop: '20px',
     marginBottom: '20px',
-    backgroundColor: theme.colorScheme === 'dark' ? '#2b2b2b' : 'lightgrey',
+    backgroundColor: '#2b2b2b',
     boxShadow: 'rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px',
   },
   title: {
-    backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'white',
+    backgroundColor: '#ff7f2aff',
     color: 'black',
     padding: '0px 10px',
     alignItems: 'center',
@@ -26,7 +25,7 @@ const useStyles = createStyles((theme) => ({
   chevron: {
     clipPath: 'polygon(50% 0, 100% 50%, 50% 100%, 0 100%, 0 50%, 0 0)',
     width: '50px',
-    backgroundColor: theme.colorScheme === 'dark' ? '#ff7f2aff' : 'white',
+    backgroundColor: '#ff7f2aff',
   },
 }));
 interface Props {
