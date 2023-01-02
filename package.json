@@ -33,6 +33,7 @@
     "@tabler/icons": "^1.116.1",
     "amazon-cognito-identity-js": "^6.0.1",
     "aws-amplify": "^5.0.5",
+    "aws-sdk": "^2.1286.0",
     "cookies-next": "^2.1.1",
     "dayjs": "^1.11.7",
     "embla-carousel-react": "^7.0.5",

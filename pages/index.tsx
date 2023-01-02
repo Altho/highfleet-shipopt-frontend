@@ -68,7 +68,7 @@ export const getStaticProps = async () => {
 const useStyles = createStyles(() => ({
   mainDiv: {
     backgroundImage:
-      'url(../background.webp), linear-gradient(to top, #ba8b02, #181818)',
+      'linear-gradient(159deg, rgba(190,163,23,0.664285782672444) 0%, rgba(217,165,43,0) 46%), url(../background.webp)',
     backgroundPosition: 'bottom',
     backgroundSize: '1.5cm',
     backgroundAttachment: 'fixed',
@@ -78,11 +78,11 @@ const useStyles = createStyles(() => ({
     amount: 0,
   },
   container: {
-    backgroundColor: 'rgba(0,0,0,0.3)',
+    //backgroundColor: 'rgba(0,0,0,0.3)',
     boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-    backdropFilter: 'blur(8px)',
     paddingTop: '10px',
     paddingBottom: '50px',
+    border: '5px solid grey',
   },
   buttonContainer: {
     display: 'flex',
