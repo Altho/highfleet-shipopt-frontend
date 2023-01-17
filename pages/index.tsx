@@ -13,7 +13,7 @@ import {
   ConstraintInput,
   IndexProps,
 } from '../types/modules.types';
-import { getBackgroundOffset, sendModules } from '../libs/utilities';
+import {getBackgroundOffset, sendModules, signIn} from '../libs/utilities';
 
 export const getStaticProps = async () => {
   const req = await fetch(
@@ -155,14 +155,13 @@ export default function HomePage({ modules, constraints }: IndexProps) {
       setVisible(true);
       setIsLoading(true);
       const data = await sendModules(
-        'https://eo2qdk3mdwiezc2mj46p2oilxq0gfpwr.lambda-url.us-east-1.on.aws/opt',
         sendData
       );
       setIsLoading(false);
       setVisible(false);
       const receivedTime = new Date().getTime();
       const delay = receivedTime - sendTime;
-      if (data.error === 'Infeasible problem') {
+      if (data.FunctionError === 'Infeasible problem') {
         showNotification({
           icon: <IconX />,
           color: 'red',
@@ -173,26 +172,27 @@ export default function HomePage({ modules, constraints }: IndexProps) {
         });
         return;
       }
-      console.log(data.modules);
-      const receivedModules = data.modules;
+      console.log(data.$response);
+      const receivedModules = data.$response.data;
+      console.log(receivedModules);
       // const filteredModules = receivedModules.filter((module: any) => module > 0);
       setSelectedModules([]);
       const moduleArray: Module[] = [];
-      Object.entries(receivedModules).forEach(([key, amount]) => {
-        // @ts-ignore
-        if (amount > 0) {
-          // @ts-ignore
-          moduleArray.push({ name: key, value: amount });
-          const returnValueObject = modules.find((mod: any) => mod.value === key);
-          if (returnValueObject) {
-            if (typeof amount === 'number') {
-              returnValueObject.amount = amount;
-            }
-          }
-          // eslint-disable-next-line @typescript-eslint/no-shadow
-          setSelectedModules((selectedModules) => [...selectedModules, returnValueObject]);
-        }
-      });
+      // Object.entries(receivedModules).forEach(([key, amount]) => {
+      //   // @ts-ignore
+      //   if (amount > 0) {
+      //     // @ts-ignore
+      //     moduleArray.push({ name: key, value: amount });
+      //     const returnValueObject = modules.find((mod: any) => mod.value === key);
+      //     if (returnValueObject) {
+      //       if (typeof amount === 'number') {
+      //         returnValueObject.amount = amount;
+      //       }
+      //     }
+      //     // eslint-disable-next-line @typescript-eslint/no-shadow
+      //     setSelectedModules((selectedModules) => [...selectedModules, returnValueObject]);
+      //   }
+      // });
       setReturnedModules(moduleArray);
       console.log(`Response received in ${delay} ms !`);
       // console.log('total amount',totalAmount(receivedModules));

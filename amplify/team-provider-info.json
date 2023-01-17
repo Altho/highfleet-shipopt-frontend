@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "highfleetshipoptfron8ed4c5cc": {}
+        "highfleetshipoptfron8ed4c5cc": {},
+        "userPoolGroups": {}
       }
     }
   },
